@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="wrap_content">-3px</dimen>
+    <dimen name="match_parent">-2px</dimen>
+
+    <dimen name="fab_margin">@dimen/margin_m</dimen>
+
+    <dimen name="margin_minus_xxs">-4dp</dimen>
+    <dimen name="margin_zero">0dp</dimen>
+    <dimen name="margin_xxxs">2dp</dimen>
+    <dimen name="margin_xxs">4dp</dimen>
+    <dimen name="margin_xs">8dp</dimen>
+    <dimen name="margin_s">12dp</dimen>
+    <dimen name="margin_m">16dp</dimen>
+    <dimen name="margin_xm">21dp</dimen>
+    <dimen name="margin_l">24dp</dimen>
+    <dimen name="margin_xl">32dp</dimen>
+    <dimen name="margin_xxl">40dp</dimen>
+    <dimen name="margin_xxxl">48dp</dimen>
+
+    <dimen name="font_size_xs">10sp</dimen>
+    <dimen name="font_size_s">12sp</dimen>
+    <dimen name="font_size_m">14sp</dimen>
+    <dimen name="font_size_l">18sp</dimen>
+    <dimen name="font_size_xl">24sp</dimen>
+    <dimen name="font_size_xxl">28sp</dimen>
+    <dimen name="font_size_xxxl">35sp</dimen>
+
+    <dimen name="progressbar_height">40dp</dimen>
+    <dimen name="btn_height">50dp</dimen>
+
+    <dimen name="splash_logo_top_margin">140dp</dimen>
+    <dimen name="logo_width">260dp</dimen>
+    <dimen name="bnv_height">56dp</dimen>
+    <dimen name="mini_player_height">56dp</dimen>
+
+    <dimen name="album_cover_width">260dp</dimen>
+    <dimen name="album_cover_top_margin">40dp</dimen>
+    <dimen name="pause_button_width">40dp</dimen>
+    <dimen name="pause_button_height">48dp</dimen>
+    <dimen name="forward_rewind_button_size">30dp</dimen>
+    <dimen name="playlist_button_size">30dp</dimen>
+    <dimen name="rounded_rect_radius">10dp</dimen>
+
+    <dimen name="icon_xxxs">8dp</dimen>
+    <dimen name="icon_xxs">16dp</dimen>
+    <dimen name="icon_xs">24dp</dimen>
+    <dimen name="icon_s">40dp</dimen>
+    <dimen name="icon_m">48dp</dimen>
+    <dimen name="icon_l">56dp</dimen>
+    <dimen name="icon_xl">56dp</dimen>
+    <dimen name="icon_xxl">72dp</dimen>
+    <dimen name="icon_xxxl">96dp</dimen>
+    <dimen name="icon_xxxxl">120dp</dimen>
+
+    <dimen name="notification_indicator_icon_size">14dp</dimen>
+    <dimen name="notification_clock_icon_size">20dp</dimen>
+
+    <dimen name="border_xs">1dp</dimen>
+    <dimen name="border_s">2dp</dimen>
+    <dimen name="border_m">4dp</dimen>
+
+    <dimen name="button_next_radius">24dp</dimen>
+    <dimen name="button_remind_me_radius">16dp</dimen>
+    <dimen name="button_language_stroke_width">@dimen/border_s</dimen>
+    <dimen name="checkbox_language_width_height">18dp</dimen>
+    <dimen name="text_line_spacing_extra">6sp</dimen>
+    <dimen name="font_size_subtitle">16sp</dimen>
+
+    <dimen name="height_radio_profile_banner">256dp</dimen>
+    <dimen name="margin_radio_profile_logo_top">200dp</dimen>
+    <dimen name="margin_radio_profile_logo_top_image">150dp</dimen>
+    <dimen name="min_height_radio_profile_description">72dp</dimen>
+    <dimen name="font_size_radio_profile_description">15sp</dimen>
+    <dimen name="text_radio_profile_line_spacing_extra">3sp</dimen>
+    <dimen name="min_height_song_playlist_container">600dp</dimen>
+    <dimen name="btn_height_upcoming_highlights">32dp</dimen>
+    <dimen name="btn_height_podcast_details_follow">36dp</dimen>
+    <dimen name="height_podcast_details_info_layout">136dp</dimen>
+
+    <dimen name="btn_remind_me_width">110dp</dimen>
+    <dimen name="btn_remind_me_height">36dp</dimen>
+    <dimen name="home_embedded_video_player_height">201dp</dimen>
+    <dimen name="video_feed_embedded_video_player_height">211dp</dimen>
+
+    <dimen name="podcast_section_height">109dp</dimen>
+    <dimen name="podcast_section_width">109dp</dimen>
+    <dimen name="podcast_following_section_width_height">100dp</dimen>
+    <dimen name="podcast_trending_height">168dp</dimen>
+    <dimen name="podcast_trending_width">168dp</dimen>
+    <dimen name="contest_title_top_margin">40dp</dimen>
+    <dimen name="contest_title_bottom_margin">24dp</dimen>
+
+    <dimen name="video_trending_height">90dp</dimen>
+    <dimen name="video_trending_width">160dp</dimen>
+    <dimen name="video_category_width">104dp</dimen>
+    <dimen name="video_category_height">104dp</dimen>
+    <dimen name="video_latest_width">160dp</dimen>
+    <dimen name="video_latest_height">90dp</dimen>
+    <dimen name="video_latest_item_duration_width">28dp</dimen>
+
+    <dimen name="pager_indicator_dimen">8dp</dimen>
+    <dimen name="height_video_featured_view_pager">256dp</dimen>
+    <dimen name="contest_item_height">134dp</dimen>
+
+    <dimen name="padding_new_tag">6dp</dimen>
+    <dimen name="margin_xlm">28dp</dimen>
+
+    <dimen name="white_circle_width_height">88dp</dimen>
+    <dimen name="user_guide_popup_pointer_width">22dp</dimen>
+    <dimen name="user_guide_popup_pointer_height">11dp</dimen>
+    <dimen name="user_guide_layout_height">136dp</dimen>
+
+</resources>

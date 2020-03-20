@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CellVideo</string>
+
+    <string name="search">Search</string>
+    <string name="search_hint">Search…</string>
+    <string name="episodes">Episodes</string>
+    <string name="playback_speed">Playback speed</string>
+    <string name="quality">Quality</string>
+</resources>

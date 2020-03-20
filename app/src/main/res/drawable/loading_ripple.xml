@@ -1,0 +1,28 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+  <group android:name="loading_inner" android:pivotX="50" android:pivotY="50"
+      android:scaleX="0" android:scaleY="0">
+    <path
+        android:pathData="M50,50m-20.538,0a20.538,20.538 0,1 1,41.076 0a20.538,20.538 0,1 1,-41.076 0"
+        android:strokeWidth="8"
+        android:fillColor="#00000000"
+        android:strokeAlpha="1"
+        android:name="inner"
+        android:strokeColor="#9146ff"/>
+  </group>
+
+  <group android:name="loading_outer" android:pivotX="50" android:pivotY="50"
+      android:scaleX="0" android:scaleY="0">
+    <path
+        android:pathData="M50,50m-20.538,0a20.538,20.538 0,1 1,41.076 0a20.538,20.538 0,1 1,-41.076 0"
+        android:strokeWidth="8"
+        android:fillColor="#00000000"
+        android:strokeAlpha="1"
+        android:name="outer"
+        android:strokeColor="#9146ff"/>
+  </group>
+
+</vector>

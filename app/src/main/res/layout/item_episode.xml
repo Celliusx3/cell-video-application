@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="selected"
+            type="Boolean" />
+        <variable
+            name="text"
+            type="String"/>
+        <variable
+            name="listener"
+            type="android.view.View.OnClickListener"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:orientation="vertical"
+        android:onClick="@{listener::onClick}"
+        android:background="@{selected ? @drawable/bg_episode_selected: @drawable/bg_episode_default}">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="@{selected ? @color/bg_lightgrey: @color/text_black}"
+            android:lineSpacingExtra="5sp"
+            android:text="@{text}"
+            android:gravity="center_horizontal"
+            tools:text="1:00PM" />
+
+    </LinearLayout>
+</layout>
+
+
