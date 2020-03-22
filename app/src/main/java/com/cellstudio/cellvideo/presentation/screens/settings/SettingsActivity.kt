@@ -4,20 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import com.cellstudio.cellvideo.R
-import com.cellstudio.cellvideo.interactor.model.presentationmodel.PagePresentationModel
-import com.cellstudio.cellvideo.presentation.adapters.MainPagerAdapter
 import com.cellstudio.cellvideo.presentation.base.BaseInjectorActivity
 import kotlinx.android.synthetic.main.activity_bottom_navigation_fragment.*
 
 class SettingsActivity : BaseInjectorActivity() {
-
-    private lateinit var tabs: List<PagePresentationModel>
-
-    private lateinit var mainPagerAdapter: MainPagerAdapter
-
     companion object {
-        private const val EXTRA_TABS = "EXTRA_TABS"
-
         fun getCallingIntent(context: Context): Intent {
             return Intent(context, SettingsActivity::class.java)
         }
@@ -35,7 +26,7 @@ class SettingsActivity : BaseInjectorActivity() {
         super.onBindView()
         val fragment = SettingsFragment.newInstance()
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.flVpMain, fragment)
+        fragmentTransaction.replace(R.id.flRoot, fragment)
         fragmentTransaction.commit()
     }
 

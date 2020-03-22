@@ -54,7 +54,7 @@ class LiveSourceFragment : BaseInjectorFragment() {
             }
 
             override fun onFragmentReady() {
-                videoFragment.setUrl("https://agplayback03.aotg-video.astro.com.my/CH3/master_GOSHOP3.m3u8")
+                videoFragment.setUrl(model?: "")
             }
 
             override fun onFullScreenEnabled() {

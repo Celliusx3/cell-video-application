@@ -8,15 +8,21 @@ import kotlinx.android.parcel.Parcelize
 data class PagePresentationModel(
     val id: Int,
     val name: String,
-    val icon: Int
+    val icon: Int,
+    val viewType: PageViewTypePresentationModel
 ): Parcelable {
     companion object {
         fun create(model: PageModel): PagePresentationModel {
             return PagePresentationModel(
                 model.id,
                 model.name,
-                model.icon
+                model.icon,
+                PageViewTypePresentationModel.VIEW_TYPE_TEXT
             )
         }
     }
+}
+
+enum class PageViewTypePresentationModel {
+    VIEW_TYPE_TEXT
 }

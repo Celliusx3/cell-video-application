@@ -4,6 +4,7 @@ import com.cellstudio.cellvideo.presentation.screens.details.DetailsActivity
 import com.cellstudio.cellvideo.presentation.screens.livesource.LiveSourceActivity
 import com.cellstudio.cellvideo.presentation.screens.main.MainActivity
 import com.cellstudio.cellvideo.presentation.screens.search.SearchActivity
+import com.cellstudio.cellvideo.presentation.screens.settings.SettingsActivity
 import com.cellstudio.cellvideo.presentation.screens.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -18,6 +19,9 @@ abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuildersModule::class])
     abstract fun contributeSearchActivity(): SearchActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuildersModule::class])
+    abstract fun contributeSettingsActivity(): SettingsActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuildersModule::class])
     abstract fun contributeLiveSourceActivity(): LiveSourceActivity

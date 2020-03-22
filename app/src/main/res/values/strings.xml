@@ -6,4 +6,6 @@
     <string name="episodes">Episodes</string>
     <string name="playback_speed">Playback speed</string>
     <string name="quality">Quality</string>
+    <string name="source_error">Something\'s wrong with the source. Please try another channel/video.</string>
+    <string name="source">Source</string>
 </resources>

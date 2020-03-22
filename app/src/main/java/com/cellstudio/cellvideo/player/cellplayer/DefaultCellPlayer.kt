@@ -4,10 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.cellstudio.cellvideo.player.cellplayer.models.CellPlayerPlaySpeed
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.PlaybackParameters
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.drm.DrmSessionManager
 import com.google.android.exoplayer2.drm.ExoMediaCrypto
 import com.google.android.exoplayer2.source.MediaSource
@@ -117,9 +114,8 @@ class DefaultCellPlayer: CellPlayer {
         player = SimpleExoPlayer.Builder(context).build()
         playerView.player = player
         playerView.useController = false
+        player?.addListener(playerEventListener)
     }
-
-
 
     private fun createCleanDataSource(uri: Uri,
                                       extension: String,
@@ -218,6 +214,11 @@ class DefaultCellPlayer: CellPlayer {
                 Player.STATE_IDLE -> { listeners.forEach { it.onIdleListener() }}
                 Player.STATE_READY -> { listeners.forEach { it.onReadyListener() }}
             }
+        }
+
+        override fun onPlayerError(error: ExoPlaybackException) {
+            super.onPlayerError(error)
+            listeners.forEach { it.onErrorListener(error) }
         }
     }
 

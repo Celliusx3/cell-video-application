@@ -14,6 +14,7 @@ import com.cellstudio.cellvideo.presentation.adapters.LiveSourceAdapter
 import com.cellstudio.cellvideo.presentation.base.BaseInjectorFragment
 import com.cellstudio.cellvideo.presentation.screens.livesource.LiveSourceActivity
 import com.cellstudio.cellvideo.presentation.screens.search.SearchActivity
+import com.cellstudio.cellvideo.presentation.screens.settings.SettingsActivity
 import kotlinx.android.synthetic.main.fragment_page.*
 
 class TextPageFragment: BaseInjectorFragment() {
@@ -65,6 +66,11 @@ class TextPageFragment: BaseInjectorFragment() {
                 return false
             }
         })
+
+        ivProfile.setOnClickListener {
+            val intent = SettingsActivity.getCallingIntent(context!!)
+            startActivity(intent)
+        }
 
         setupAdapter()
         liveSourceMainViewModel = ViewModelProvider(this,viewModelFactory).get(LiveSourceMainViewModelImpl::class.java)

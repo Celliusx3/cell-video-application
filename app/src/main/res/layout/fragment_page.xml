@@ -38,8 +38,10 @@
                     app:popupTheme="@style/AppTheme.PopupOverlay" >
                     
                     <ImageView
+                        android:id="@+id/ivProfile"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:background="@drawable/selector_ripple"
                         android:src="@drawable/ic_user"/>
                     
                 </androidx.appcompat.widget.Toolbar>

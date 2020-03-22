@@ -28,7 +28,6 @@ class SearchFragment: BaseInjectorFragment() {
 
     private var inputMethodManager: InputMethodManager? = null
 
-
     companion object {
         fun newInstance(): SearchFragment {
             val bundle = Bundle()
@@ -64,24 +63,6 @@ class SearchFragment: BaseInjectorFragment() {
             }
         }
 
-//        onKeyboardDismissingScrollListener = new RecyclerView.OnScrollListener() {
-//            boolean isKeyboardDismissedByScroll;
-//
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int state) {
-//                switch (state) {
-//                    case RecyclerView.SCROLL_STATE_DRAGGING:
-//                    if (!isKeyboardDismissedByScroll) {
-//                        hideKeyboard();
-//                        isKeyboardDismissedByScroll = !isKeyboardDismissedByScroll;
-//                    }
-//                    break;
-//                    case RecyclerView.SCROLL_STATE_IDLE:
-//                    isKeyboardDismissedByScroll = false;
-//                    break;
-//                }
-//            }
-//        };
         rvSearchMain.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             var isKeyboardDismissedByScroll = false
 

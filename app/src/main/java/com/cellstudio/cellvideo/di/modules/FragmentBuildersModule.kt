@@ -5,6 +5,7 @@ import com.cellstudio.cellvideo.presentation.screens.livesource.LiveSourceFragme
 import com.cellstudio.cellvideo.presentation.screens.main.PageFragment
 import com.cellstudio.cellvideo.presentation.screens.main.TextPageFragment
 import com.cellstudio.cellvideo.presentation.screens.search.SearchFragment
+import com.cellstudio.cellvideo.presentation.screens.settings.SettingsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -25,6 +26,8 @@ abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributeLiveSourceFragment(): LiveSourceFragment
 
+    @ContributesAndroidInjector
+    abstract fun contributeSettingsFragment(): SettingsFragment
 
 
 

@@ -101,8 +101,8 @@ class VideoPlayerFragment : BaseFragment() {
 
     private fun initializeVideoPlayerListener() {
         videoPlayer.addPlayerListener(object: CellPlayer.CellPlayerListener{
-            override fun onBufferListener() {}
-            override fun onErrorListener(throwable: Throwable) {}
+            override fun onBufferListener() { Log.d(TAG, "onBuffer")}
+            override fun onErrorListener(throwable: Throwable) { onPlayerError() }
             override fun onTimeListener(position: Long, duration: Long) {
                 Log.d(TAG, "onTime: $position | $duration")
                 playerControl.updateDuration(duration)
@@ -152,7 +152,7 @@ class VideoPlayerFragment : BaseFragment() {
         if (viewControl.parent != null) {
             (viewControl.parent as ViewGroup).removeView(viewControl)
         }
-        flVideoPlayerContainer.addView(viewControl)
+        flVideoPlayerControls.addView(viewControl)
         // Register callbacks
         playerControl.registerCallbackListener(controlsListener)
         playerControl.updateFullScreenIcon(false)
@@ -265,6 +265,13 @@ class VideoPlayerFragment : BaseFragment() {
             disableFullScreen()
         }
     }
+
+    private fun onPlayerError() {
+        tvVideoPlayerError.visibility = View.VISIBLE
+        flVideoPlayerControls.visibility = View.GONE
+    }
+
+
 
 
     interface Listener {

@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.cellstudio.cellvideo.data.base.BaseHttpClient
 import com.cellstudio.cellvideo.data.base.HttpClient
+import com.cellstudio.cellvideo.data.environment.Environment
+import com.cellstudio.cellvideo.data.environment.M3UEnvironment
 import com.cellstudio.cellvideo.data.services.storage.SharedPrefsStorageService
 import com.cellstudio.cellvideo.data.services.storage.StorageService
 import com.cellstudio.cellvideo.interactor.scheduler.DefaultSchedulerProvider
@@ -27,6 +29,12 @@ class ApplicationModule(private val baseApplication: BaseApplication) {
     @Singleton
     fun provideApplicationContext(baseApplication: BaseApplication): Context {
         return baseApplication
+    }
+
+    @Provides
+    @Singleton
+    fun provideEnvironment(context: Context): Environment {
+        return M3UEnvironment(context)
     }
 
     @Provides

@@ -6,6 +6,7 @@ import com.cellstudio.cellvideo.interactor.viewmodel.details.DetailsViewModelImp
 import com.cellstudio.cellvideo.interactor.viewmodel.main.LiveSourceMainViewModelImpl
 import com.cellstudio.cellvideo.interactor.viewmodel.main.MainViewModelImpl
 import com.cellstudio.cellvideo.interactor.viewmodel.search.SearchViewModelImpl
+import com.cellstudio.cellvideo.interactor.viewmodel.settings.SettingsViewModelImpl
 import com.cellstudio.cellvideo.interactor.viewmodel.splash.SplashViewModelImpl
 import dagger.Binds
 import dagger.Module
@@ -37,6 +38,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LiveSourceMainViewModelImpl::class)
     abstract fun bindLiveSourceMainViewModel(liveSourceMainViewModelImpl: LiveSourceMainViewModelImpl): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SettingsViewModelImpl::class)
+    abstract fun bindSettingsViewModel(settingsViewModelImpl: SettingsViewModelImpl): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

@@ -2,7 +2,6 @@ package com.cellstudio.cellvideo.interactor.viewmodel.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cellstudio.cellvideo.data.repositories.configrepository.ConfigRepository
 import com.cellstudio.cellvideo.data.repositories.eyunzhurepository.EYunZhuRepository
 import com.cellstudio.cellvideo.interactor.model.presentationmodel.VideoPresentationModel
 import com.cellstudio.cellvideo.interactor.scheduler.SchedulerProvider
@@ -10,7 +9,6 @@ import com.cellstudio.cellvideo.interactor.viewmodel.base.BaseViewModel
 import javax.inject.Inject
 
 class DetailsViewModelImpl @Inject constructor(scheduler: SchedulerProvider,
-                                            private val configRepository: ConfigRepository,
                                             private val eYunZhuRepository: EYunZhuRepository
 ): BaseViewModel(scheduler), DetailsViewModel {
     private lateinit var input: DetailsViewModel.Input
