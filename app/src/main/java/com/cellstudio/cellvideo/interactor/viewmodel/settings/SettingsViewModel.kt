@@ -1,7 +1,7 @@
 package com.cellstudio.cellvideo.interactor.viewmodel.settings
 
 import androidx.lifecycle.LiveData
-import com.cellstudio.cellvideo.data.entities.general.DataSource
+import com.cellstudio.cellvideo.interactor.model.presentationmodel.DataSourcePresentationModel
 import com.cellstudio.cellvideo.interactor.viewmodel.base.ViewModel
 
 interface SettingsViewModel : ViewModel {
@@ -12,12 +12,12 @@ interface SettingsViewModel : ViewModel {
     interface ViewEvent : ViewModel.ViewEvent {
         fun startScreen()
         fun openSourceSelectionDialog()
-        fun updateSource(dataSource: DataSource)
+        fun updateSource(dataSource: DataSourcePresentationModel)
     }
 
     interface ViewData : ViewModel.ViewData {
         fun getDataSource(): LiveData<String>
-        fun getOpenSourceSelectionDialog(): LiveData<DataSource>
+        fun getOpenSourceSelectionDialog(): LiveData<DataSourcePresentationModel>
     }
 
     interface Output : ViewModel.Output {

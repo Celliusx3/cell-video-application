@@ -3,25 +3,26 @@ package com.cellstudio.cellvideo.interactor.viewmodel.settings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.cellstudio.cellvideo.constants.SharedPrefConstants
 import com.cellstudio.cellvideo.data.entities.general.DataSource
-import com.cellstudio.cellvideo.data.services.storage.StorageService
+import com.cellstudio.cellvideo.domain.interactor.settings.SettingsInteractor
+import com.cellstudio.cellvideo.interactor.model.domainmodel.DataSourceModel
+import com.cellstudio.cellvideo.interactor.model.presentationmodel.DataSourcePresentationModel
 import com.cellstudio.cellvideo.interactor.scheduler.SchedulerProvider
 import com.cellstudio.cellvideo.interactor.viewmodel.base.BaseViewModel
 import javax.inject.Inject
 
 class SettingsViewModelImpl @Inject constructor(scheduler: SchedulerProvider,
-                                                private val storageService: StorageService
+                                                private val settingsInteractor: SettingsInteractor
 ): BaseViewModel(scheduler), SettingsViewModel {
-    private val dataSourceLiveData: MutableLiveData<DataSource> = MutableLiveData()
-    private val openSourceSelectionDialogLiveData: MutableLiveData<DataSource> = MutableLiveData()
+    private val dataSourceLiveData: MutableLiveData<DataSourcePresentationModel> = MutableLiveData()
+    private val openSourceSelectionDialogLiveData: MutableLiveData<DataSourcePresentationModel> = MutableLiveData()
     private val resetLiveData: MutableLiveData<Unit> = MutableLiveData()
 
 
     override fun getViewData(): SettingsViewModel.ViewData {
         return object: SettingsViewModel.ViewData {
-            override fun getDataSource(): LiveData<String> = Transformations.map (dataSourceLiveData) { it.text }
-            override fun getOpenSourceSelectionDialog(): LiveData<DataSource> = openSourceSelectionDialogLiveData
+            override fun getDataSource(): LiveData<String> = Transformations.map (dataSourceLiveData) { it.label }
+            override fun getOpenSourceSelectionDialog(): LiveData<DataSourcePresentationModel> = openSourceSelectionDialogLiveData
             override val loading: LiveData<Boolean> = loadingLiveData
         }
     }
@@ -36,13 +37,14 @@ class SettingsViewModelImpl @Inject constructor(scheduler: SchedulerProvider,
 
     override fun getViewEvent(): SettingsViewModel.ViewEvent {
         return object: SettingsViewModel.ViewEvent {
-            private fun setupInitialStorageService(): DataSource {
-                val start = storageService.getString(SharedPrefConstants.start)
-                return if (start.isNullOrEmpty()) {
-                    storageService.setString(SharedPrefConstants.start, DataSource.M3U.name)
-                    DataSource.M3U
+            private fun setupInitialStorageService(): DataSourcePresentationModel {
+                val start = settingsInteractor.getSelectedDataSource()
+                return if (start == null) {
+                    val dataSource = DataSourceModel.create(DataSource.M3U)
+                    settingsInteractor.updateSelectedDataSource(dataSource)
+                    DataSourcePresentationModel.create(dataSource)
                 } else {
-                    DataSource.valueOf(start)
+                    DataSourcePresentationModel.create(start)
                 }
             }
 
@@ -54,10 +56,10 @@ class SettingsViewModelImpl @Inject constructor(scheduler: SchedulerProvider,
                 openSourceSelectionDialogLiveData.value = dataSourceLiveData.value
             }
 
-            override fun updateSource(dataSource: DataSource) {
+            override fun updateSource(dataSource: DataSourcePresentationModel) {
                 if (dataSourceLiveData.value == dataSource)
                     return
-                storageService.setString(SharedPrefConstants.start, dataSource.name)
+                settingsInteractor.updateSelectedDataSource(DataSourceModel(dataSource.id, dataSource.label, dataSource.url, dataSource.isEditable))
                 dataSourceLiveData.value = dataSource
                 resetLiveData.value = Unit
             }

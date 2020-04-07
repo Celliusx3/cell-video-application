@@ -10,56 +10,136 @@
             type="com.cellstudio.cellvideo.interactor.viewmodel.settings.SettingsViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_collapseMode="pin"
-            app:titleMarginStart="8dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:elevation="0dp">
 
-        </androidx.appcompat.widget.Toolbar>
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/ctlToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:collapsedTitleTextAppearance="@style/AppTheme.CollapsedToolBarTitle"
+                app:expandedTitleTextAppearance="@style/AppTheme.ExpandedToolBarTitle"
+                app:expandedTitleMarginStart="16dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-        <LinearLayout
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="128dp"
+                    app:layout_collapseMode="parallax"/>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:titleMarginStart="8dp"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:id = "@+id/llSettingsSource"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:onClick="@{() -> viewmodel.viewEvent.openSourceSelectionDialog()}"
-                android:background="@drawable/selector_ripple"
-                android:padding = "16dp"
-                android:weightSum="1">
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id = "@+id/llSettingsSource"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:text = "@string/source"/>
+                    android:orientation="horizontal"
+                    android:onClick="@{() -> viewmodel.viewEvent.openSourceSelectionDialog()}"
+                    android:background="@drawable/selector_ripple"
+                    android:padding = "16dp"
+                    android:weightSum="1">
 
-                <TextView
-                    android:id="@+id/tvSettingsSource"
-                    android:layout_width="128dp"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="18sp"
-                    android:text = "@{viewmodel.viewData.dataSource}"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:text = "@string/source"/>
+
+                    <TextView
+                        android:id="@+id/tvSettingsSource"
+                        android:layout_width="128dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        android:text = "@{viewmodel.viewData.dataSource}"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
+        </androidx.core.widget.NestedScrollView>
 
-        </LinearLayout>
 
-    </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical">-->
+
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="?attr/actionBarSize"-->
+<!--            app:layout_collapseMode="pin"-->
+<!--            app:titleMarginStart="8dp"-->
+<!--            app:popupTheme="@style/AppTheme.PopupOverlay" >-->
+
+<!--        </androidx.appcompat.widget.Toolbar>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <LinearLayout-->
+<!--                android:id = "@+id/llSettingsSource"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:onClick="@{() -> viewmodel.viewEvent.openSourceSelectionDialog()}"-->
+<!--                android:background="@drawable/selector_ripple"-->
+<!--                android:padding = "16dp"-->
+<!--                android:weightSum="1">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:text = "@string/source"/>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tvSettingsSource"-->
+<!--                    android:layout_width="128dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textAlignment="textEnd"-->
+<!--                    android:textColor="@color/colorAccent"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:text = "@{viewmodel.viewData.dataSource}"/>-->
+
+<!--            </LinearLayout>-->
+
+
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->
 </layout>
