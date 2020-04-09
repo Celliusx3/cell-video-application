@@ -60,7 +60,7 @@ class SourceSettingsFragment : BaseInjectorBottomSheetDialogFragment() {
         val fragment = AddSourceDialogFragment.newInstance("")
         fragment.listener = object: AddSourceDialogFragment.Listener {
             override fun addSource(dataSource: DataSourcePresentationModel) {
-                settingsInteractor.addNewSource(DataSourceModel(dataSource.id, dataSource.label, dataSource.url, dataSource.isEditable))
+                viewModel.getViewEvent().addSource(DataSourceModel(dataSource.id, dataSource.label, dataSource.url, dataSource.isEditable))
                 adapter.addData(dataSource)
             }
         }
