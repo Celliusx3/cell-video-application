@@ -6,6 +6,8 @@ import io.reactivex.Observable
 
 interface DataSourceRepository {
     fun getPages(): List<PageModel>
-    fun getLiveSource(name: String): Observable<List<LiveSourceModel>>
+    fun getLiveSource(map: Map<String, Any>): Observable<List<LiveSourceModel>>
+    fun search(id: String)
+    fun validateDataSource(url: String): Observable<Boolean>
 
 }

@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.cellstudio.cellvideo.interactor.model.presentationmodel.PagePresentationModel
-import com.cellstudio.cellvideo.presentation.screens.main.TextPageFragment
+import com.cellstudio.cellvideo.presentation.screens.main.PageFragment
 import java.util.*
 
 class MainPagerAdapter(fragmentManager: FragmentManager,
@@ -21,7 +21,7 @@ class MainPagerAdapter(fragmentManager: FragmentManager,
 
     override fun getItem(position: Int): Fragment {
         val fragmentPage = fragmentPages[position]
-        return TextPageFragment.newInstance()
+        return PageFragment.newInstance(fragmentPage.name, fragmentPage.filter, fragmentPage.datas as HashMap<String, String>)
     }
 
     override fun getCount(): Int {

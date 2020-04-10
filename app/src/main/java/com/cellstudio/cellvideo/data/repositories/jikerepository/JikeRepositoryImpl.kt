@@ -31,11 +31,18 @@ class JikeRepositoryImpl(private val httpClient: HttpClient): DataSourceReposito
         return listOf(JikePage.HomePage).map { PageModel.create(it) }
     }
 
-    override fun getLiveSource(name: String): Observable<List<LiveSourceModel>> {
-        return Observable.error(NoSuchMethodException())
+    override fun validateDataSource(url: String): Observable<Boolean> {
+        return httpClient.getM3UApiService().getLiveSources(url)
+            .map { it.isNotEmpty() }
     }
+
+    override fun search(id: String) {}
 
     private fun getApiService(): JikeService {
         return httpClient.getJikeApiService()
+    }
+
+    override fun getLiveSource(map: Map<String, Any>): Observable<List<LiveSourceModel>> {
+        return Observable.error(NoSuchMethodException())
     }
 }

@@ -18,6 +18,7 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onGetInputData()
+        onInject()
         onSetupViewModel()
         setupUI()
         onBindData(view)
@@ -27,6 +28,8 @@ abstract class BaseBottomSheetDialogFragment: BottomSheetDialogFragment() {
     protected open fun onGetInputData() {}
 
     protected open fun onSetupViewModel() {}
+
+    protected open fun onInject() {}
 
     protected open fun onBindData(view: View) {}
 

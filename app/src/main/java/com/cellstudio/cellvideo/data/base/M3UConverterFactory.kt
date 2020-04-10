@@ -17,7 +17,7 @@ import java.lang.reflect.Type
  * you must [add this instance][Retrofit.Builder.addConverterFactory]
  * last to allow the other converters a chance to see their types.
  */
-class M3UConverterFactory constructor() : Converter.Factory() {
+class M3UConverterFactory : Converter.Factory() {
     override fun responseBodyConverter(
         type: Type,
         annotations: Array<Annotation>,

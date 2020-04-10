@@ -19,13 +19,14 @@ object M3UParser {
         while (s.hasNext()) {
             val line = s.next()
             val matcher = channel_pattern.matcher(line)
-            require(matcher.find())
-            val item = M3UItem(
-                matcher.group(2),
-                matcher.group(3),
-                parseMetadata(matcher.group(1) ?: "", metadata_pattern)
-            )
-            cl.add(item)
+            if (matcher.find()) {
+                val item = M3UItem(
+                    matcher.group(2),
+                    matcher.group(3),
+                    parseMetadata(matcher.group(1) ?: "", metadata_pattern)
+                )
+                cl.add(item)
+            }
         }
         return cl
     }

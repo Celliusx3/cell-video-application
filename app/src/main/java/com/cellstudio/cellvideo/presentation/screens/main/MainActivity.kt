@@ -77,6 +77,7 @@ class MainActivity : BaseInjectorActivity() {
     private fun setupMainPagerAdapter(pages: List<PagePresentationModel>) {
         mainPagerAdapter = MainPagerAdapter(supportFragmentManager, pages)
         dsvpRoot.adapter = mainPagerAdapter
+        dsvpRoot.offscreenPageLimit = pages.size
     }
 
 

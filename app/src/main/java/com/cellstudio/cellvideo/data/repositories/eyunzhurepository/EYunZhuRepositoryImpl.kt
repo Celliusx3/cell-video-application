@@ -33,9 +33,16 @@ class EYunZhuRepositoryImpl(private val httpClient: HttpClient): DataSourceRepos
         return listOf(EYunZhuPage.HomePage).map { PageModel.create(it) }
     }
 
-    override fun getLiveSource(name: String): Observable<List<LiveSourceModel>> {
+    override fun getLiveSource(map: Map<String, Any>): Observable<List<LiveSourceModel>> {
         return getApiService().getLiveSources()
             .map {it.data.map { LiveSourceModel.create(it)}}
     }
+
+    override fun validateDataSource(url: String): Observable<Boolean> {
+        return httpClient.getM3UApiService().getLiveSources(url)
+            .map { it.isNotEmpty() }
+    }
+
+    override fun search(id: String) {}
 
 }
