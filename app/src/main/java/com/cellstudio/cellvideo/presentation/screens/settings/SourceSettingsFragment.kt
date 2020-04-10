@@ -1,9 +1,11 @@
 package com.cellstudio.cellvideo.presentation.screens.settings
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -11,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cellstudio.cellvideo.R
 import com.cellstudio.cellvideo.databinding.FragmentSourceSettingsBinding
 import com.cellstudio.cellvideo.domain.interactor.settings.SettingsInteractor
-import com.cellstudio.cellvideo.interactor.model.domainmodel.DataSourceModel
 import com.cellstudio.cellvideo.interactor.model.presentationmodel.DataSourcePresentationModel
 import com.cellstudio.cellvideo.interactor.viewmodel.settings.SourceSettingsViewModel
 import com.cellstudio.cellvideo.interactor.viewmodel.settings.SourceSettingsViewModelImpl
@@ -21,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_source_settings.*
 import javax.inject.Inject
+
 
 class SourceSettingsFragment : BaseInjectorBottomSheetDialogFragment() {
     var listener: Listener?= null
@@ -60,8 +62,7 @@ class SourceSettingsFragment : BaseInjectorBottomSheetDialogFragment() {
         val fragment = AddSourceDialogFragment.newInstance("")
         fragment.listener = object: AddSourceDialogFragment.Listener {
             override fun addSource(dataSource: DataSourcePresentationModel) {
-                viewModel.getViewEvent().addSource(DataSourceModel(dataSource.id, dataSource.label, dataSource.url, dataSource.isEditable))
-                adapter.addData(dataSource)
+                viewModel.getViewEvent().addSource(dataSource)
             }
         }
         fragment.show(childFragmentManager, null)
@@ -80,6 +81,15 @@ class SourceSettingsFragment : BaseInjectorBottomSheetDialogFragment() {
         viewModel.getViewData().getLiveSources().observe(this, Observer {
             setupAdapter(it.first, it.second)
         })
+
+        viewModel.getViewData().getAddedSource().observe(this, Observer {
+            adapter.addData(it)
+        })
+
+        viewModel.getViewData().getRemovedSource().observe(this, Observer {
+            adapter.removeData(it)
+        })
+
     }
 
     override fun onCancel(dialog: DialogInterface) {
@@ -100,13 +110,24 @@ class SourceSettingsFragment : BaseInjectorBottomSheetDialogFragment() {
                 this@SourceSettingsFragment.dismiss()
             }
 
-            override fun onEditClicked(model: DataSourcePresentationModel) {
-                this@SourceSettingsFragment.showAddSourceDialog()
+            override fun onDeleteClicked(model: DataSourcePresentationModel) {
+                this@SourceSettingsFragment.showDeleteDialog(context!!, model)
             }
         }
         val layoutManager = LinearLayoutManager(context!!)
         rvMoreList.layoutManager = layoutManager
         rvMoreList.adapter = adapter
+    }
+
+    private fun showDeleteDialog(context: Context, model: DataSourcePresentationModel) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.AppThemeAlertDialog)
+        builder.setTitle(getString(R.string.delete_source))
+        builder.setMessage(getString(R.string.delete_source_description))
+        builder.setPositiveButton(getString(R.string.confirm)) { _, _ ->
+            viewModel.getViewEvent().removeSource(model.id)
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     interface Listener {

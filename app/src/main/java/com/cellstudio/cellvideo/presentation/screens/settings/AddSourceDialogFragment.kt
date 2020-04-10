@@ -13,7 +13,6 @@ import com.cellstudio.cellvideo.interactor.viewmodel.settings.AddSourceViewModel
 import com.cellstudio.cellvideo.interactor.viewmodel.settings.AddSourceViewModelImpl
 import com.cellstudio.cellvideo.presentation.base.BaseInjectorDialogFragment
 import com.cellstudio.cellvideo.presentation.screens.loading.LoadingDialogFragment
-import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class AddSourceDialogFragment: BaseInjectorDialogFragment() {
@@ -33,7 +32,6 @@ class AddSourceDialogFragment: BaseInjectorDialogFragment() {
     var listener: Listener ?= null
 
     private val loadingDialogFragment = LoadingDialogFragment.newInstance()
-    private val disposable: CompositeDisposable = CompositeDisposable()
     private lateinit var viewModel: AddSourceViewModel
     private lateinit var labelName: String
     private lateinit var sourceUrl: String
