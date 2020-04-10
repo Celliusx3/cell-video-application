@@ -75,6 +75,8 @@
                     <TextView
                         android:id="@+id/tvSettingsSource"
                         android:layout_width="128dp"
+                        android:lines="1"
+                        android:ellipsize="end"
                         android:layout_height="wrap_content"
                         android:textAlignment="textEnd"
                         android:textColor="@color/colorAccent"

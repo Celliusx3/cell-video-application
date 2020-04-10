@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-abstract class BaseInjectorFragment: BaseFragment() {
+abstract class BaseInjectorDialogFragment: BaseDialogFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 

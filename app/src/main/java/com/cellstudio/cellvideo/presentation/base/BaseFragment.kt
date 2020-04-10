@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseFragment : Fragment() {
-
     protected val disposable: CompositeDisposable = CompositeDisposable()
 
     @LayoutRes
@@ -25,9 +24,12 @@ abstract class BaseFragment : Fragment() {
 
         onGetInputData()
         onInject()
+        onSetupViewModel()
         onBindView(view)
         onBindData(view)
     }
+
+    protected open fun onSetupViewModel() {}
 
     override fun onDestroy() {
         super.onDestroy()
