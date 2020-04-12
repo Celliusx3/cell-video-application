@@ -45,7 +45,8 @@ dependencies {
     ext.RXANDROID_VERSION = '2.1.1'
     ext.GLIDE_VERSION = '4.11.0'
     ext.GRAVITY_SNAP_VERSION = "2.2.0"
-
+    ext.MATERIAL_VERSION = "1.1.0"
+    ext.ROOM_VERSION = "2.2.5"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -87,4 +88,15 @@ dependencies {
 
     // Gravity Snap Helper
     implementation "com.github.rubensousa:gravitysnaphelper:${GRAVITY_SNAP_VERSION}"
+
+    // Material
+    implementation "com.google.android.material:material:${MATERIAL_VERSION}"
+
+    implementation "androidx.room:room-runtime:${ROOM_VERSION}"
+    kapt "androidx.room:room-compiler:${ROOM_VERSION}" // For Kotlin use kapt instead of annotationProcessor
+
+    // optional - RxJava support for Room
+    implementation "androidx.room:room-rxjava2:${ROOM_VERSION}"
+
+
 }

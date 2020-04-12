@@ -8,4 +8,14 @@
     <string name="quality">Quality</string>
     <string name="source_error">Something\'s wrong with the source. Please try another channel/video.</string>
     <string name="source">Source</string>
+    <string name="add_source">Add source</string>
+    <string name="delete_source">Delete source</string>
+    <string name="delete_source_description">Are you sure you want to delete this source?</string>
+    <string name="label_name">Label name</string>
+    <string name="source_url">Source url</string>
+    <string name="add_new_source">Add new source</string>
+
+    <string name="confirm">Confirm</string>
+    <string name="not_a_valid_link">Sorry, this is not a valid link.</string>
+    <string name="settings">Settings</string>
 </resources>

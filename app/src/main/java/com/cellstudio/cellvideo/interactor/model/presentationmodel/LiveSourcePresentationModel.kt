@@ -4,20 +4,43 @@ import android.os.Parcelable
 import com.cellstudio.cellvideo.interactor.model.domainmodel.LiveSourceModel
 import kotlinx.android.parcel.Parcelize
 
+//@Parcelize
+//data class LiveSourcePresentationModel(
+//    val id: String,
+//    val name: String,
+//    val videoUrl: List<Pair<String, String>>?,
+//    val viewType: LiveSourceViewType
+//): Parcelable {
+//    companion object {
+//        fun create(model: LiveSourceModel): LiveSourcePresentationModel {
+//            return LiveSourcePresentationModel(
+//                model.id,
+//                model.name,
+//                listOf(Pair(model.url, model.url)),
+//                LiveSourceViewType.VIEW_TYPE_TEXT
+//            )
+//        }
+//    }
+//}
+
 @Parcelize
 data class LiveSourcePresentationModel(
     val id: String,
     val name: String,
-    val videoUrl: List<Pair<String, String>>?,
-    val viewType: LiveSourceViewType
+    val image: String,
+    val imageWidth: Int,
+    val imageHeight: Int,
+    val url: String
 ): Parcelable {
     companion object {
         fun create(model: LiveSourceModel): LiveSourcePresentationModel {
             return LiveSourcePresentationModel(
                 model.id,
                 model.name,
-                model.videoUrl?.toList(),
-                LiveSourceViewType.VIEW_TYPE_TEXT
+                model.image,
+                model.imageWidth,
+                model.imageHeight,
+                model.url
             )
         }
     }

@@ -1,16 +1,18 @@
 package com.cellstudio.cellvideo.di.modules
 
-import android.util.Log
 import com.cellstudio.cellvideo.constants.SharedPrefConstants
 import com.cellstudio.cellvideo.data.base.HttpClient
+import com.cellstudio.cellvideo.data.db.AppDatabase
 import com.cellstudio.cellvideo.data.entities.general.DataSource
+import com.cellstudio.cellvideo.data.repositories.customRepository.CustomRepositoryImpl
 import com.cellstudio.cellvideo.data.repositories.eyunzhurepository.EYunZhuRepository
 import com.cellstudio.cellvideo.data.repositories.eyunzhurepository.EYunZhuRepositoryImpl
 import com.cellstudio.cellvideo.data.repositories.jikerepository.JikeRepositoryImpl
-import com.cellstudio.cellvideo.data.repositories.m3urepository.M3URepository
 import com.cellstudio.cellvideo.data.repositories.m3urepository.M3URepositoryImpl
+import com.cellstudio.cellvideo.data.repositories.settingsRepository.SettingsRepositoryImpl
 import com.cellstudio.cellvideo.data.services.storage.StorageService
 import com.cellstudio.cellvideo.domain.repository.DataSourceRepository
+import com.cellstudio.cellvideo.domain.repository.SettingsRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -21,26 +23,17 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideDataSourceRepository(storage: StorageService, httpClient: HttpClient): DataSourceRepository {
-        Log.d("GGTest", storage.getString(SharedPrefConstants.start))
-        return when (storage.getString(SharedPrefConstants.start)) {
-            DataSource.EYUNZHU.name -> EYunZhuRepositoryImpl(httpClient)
-            DataSource.JIKE.name -> JikeRepositoryImpl(httpClient)
-            else -> M3URepositoryImpl(httpClient)
+        if (storage.getSelectedDataSource(SharedPrefConstants.SELECTED_DATA_SOURCE)?.id == null) {
+            return M3URepositoryImpl(httpClient)
+        }
+
+        return when (storage.getSelectedDataSource(SharedPrefConstants.SELECTED_DATA_SOURCE)?.id) {
+            DataSource.EYUNZHU.id -> EYunZhuRepositoryImpl(httpClient)
+            DataSource.JIKE.id -> JikeRepositoryImpl(httpClient)
+            DataSource.M3U.id -> M3URepositoryImpl(httpClient)
+            else -> CustomRepositoryImpl(httpClient, storage)
         }
     }
-
-
-//    @Provides
-//    @Singleton
-//    fun provideJikeRepository(httpClient: HttpClient): JikeRepository {
-//        return JikeRepositoryImpl(httpClient)
-//    }
-
-//    @Provides
-//    @Singleton
-//    fun provideConfigRepository(): ConfigRepository {
-//        return ConfigRepositoryImpl()
-//    }
 
     @Provides
     @Singleton
@@ -50,7 +43,8 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideM3URepository(httpClient: HttpClient): M3URepository {
-        return M3URepositoryImpl(httpClient)
+    fun provideSettingsRepository(storage: StorageService, database: AppDatabase): SettingsRepository {
+        return SettingsRepositoryImpl(storage, database)
     }
+
 }

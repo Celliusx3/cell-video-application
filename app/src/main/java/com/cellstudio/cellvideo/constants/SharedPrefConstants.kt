@@ -1,6 +1,5 @@
 package com.cellstudio.cellvideo.constants
 
 object SharedPrefConstants {
-    const val start = "Start"
-
+    const val SELECTED_DATA_SOURCE = "SELECTED_DATA_SOURCE"
 }

@@ -17,6 +17,7 @@ import com.cellstudio.cellvideo.player.cellplayer.playercontrol.DefaultCellLiveP
 import com.cellstudio.cellvideo.player.cellplayer.playercontrol.Orientation
 import com.cellstudio.cellvideo.player.cellplayer.utils.UIVisibilityUtil
 import com.cellstudio.cellvideo.presentation.base.BaseFragment
+import com.google.android.exoplayer2.ExoPlaybackException
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_video_player.*
 
@@ -92,7 +93,7 @@ class LiveSourcePlayerFragment : BaseFragment() {
     private fun initializeVideoPlayerListener() {
         videoPlayer.addPlayerListener(object: CellPlayer.CellPlayerListener{
             override fun onBufferListener() {}
-            override fun onErrorListener(throwable: Throwable) {}
+            override fun onErrorListener(throwable: ExoPlaybackException) {}
             override fun onTimeListener(position: Long, duration: Long) {
                 Log.d(TAG, "onTime: $position | $duration")
                 playerControl.updateDuration(duration)
@@ -101,8 +102,7 @@ class LiveSourcePlayerFragment : BaseFragment() {
             override fun onPlayListener() {playerControl.setPlayPause(true)}
             override fun onPauseListener() {playerControl.setPlayPause(false)}
             override fun onCompleteListener() { Log.d(TAG, "onCompleteListener") }
-            override fun onIdleListener() {
-                Log.d(TAG, "onIdleListener")}
+            override fun onIdleListener() { Log.d(TAG, "onIdleListener")}
             override fun onReadyListener() { Log.d(TAG, "onReadyListener") }
         })
     }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.cellstudio.cellvideo.data.base.BaseHttpClient
 import com.cellstudio.cellvideo.data.base.HttpClient
+import com.cellstudio.cellvideo.data.db.AppDatabase
 import com.cellstudio.cellvideo.data.environment.Environment
 import com.cellstudio.cellvideo.data.environment.M3UEnvironment
 import com.cellstudio.cellvideo.data.services.storage.SharedPrefsStorageService
@@ -11,6 +12,7 @@ import com.cellstudio.cellvideo.data.services.storage.StorageService
 import com.cellstudio.cellvideo.interactor.scheduler.DefaultSchedulerProvider
 import com.cellstudio.cellvideo.interactor.scheduler.SchedulerProvider
 import com.cellstudio.cellvideo.presentation.BaseApplication
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -51,8 +53,8 @@ class ApplicationModule(private val baseApplication: BaseApplication) {
 
     @Provides
     @Singleton
-    fun provideStorageService(prefs: SharedPreferences): StorageService {
-        return SharedPrefsStorageService(prefs)
+    fun provideStorageService(prefs: SharedPreferences, gson: Gson): StorageService {
+        return SharedPrefsStorageService(prefs, gson)
     }
 
     @Provides
@@ -63,5 +65,17 @@ class ApplicationModule(private val baseApplication: BaseApplication) {
             prefs = context.getSharedPreferences(key, Context.MODE_PRIVATE)
         }
         return prefs!!
+    }
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return Gson()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppDatabase(context: Context): AppDatabase {
+        return AppDatabase.getInstance(context)
     }
 }

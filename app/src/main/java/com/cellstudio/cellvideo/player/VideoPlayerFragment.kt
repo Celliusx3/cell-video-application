@@ -18,6 +18,8 @@ import com.cellstudio.cellvideo.player.cellplayer.playercontrol.DefaultCellVideo
 import com.cellstudio.cellvideo.player.cellplayer.playercontrol.Orientation
 import com.cellstudio.cellvideo.player.cellplayer.utils.UIVisibilityUtil
 import com.cellstudio.cellvideo.presentation.base.BaseFragment
+import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.source.BehindLiveWindowException
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_video_player.*
 
@@ -102,7 +104,7 @@ class VideoPlayerFragment : BaseFragment() {
     private fun initializeVideoPlayerListener() {
         videoPlayer.addPlayerListener(object: CellPlayer.CellPlayerListener{
             override fun onBufferListener() { Log.d(TAG, "onBuffer")}
-            override fun onErrorListener(throwable: Throwable) { onPlayerError() }
+            override fun onErrorListener(throwable: ExoPlaybackException) { onPlayerError(throwable) }
             override fun onTimeListener(position: Long, duration: Long) {
                 Log.d(TAG, "onTime: $position | $duration")
                 playerControl.updateDuration(duration)
@@ -266,9 +268,29 @@ class VideoPlayerFragment : BaseFragment() {
         }
     }
 
-    private fun onPlayerError() {
-        tvVideoPlayerError.visibility = View.VISIBLE
-        flVideoPlayerControls.visibility = View.GONE
+    private fun isBehindLiveWindow(e: ExoPlaybackException): Boolean {
+        if (e.type != ExoPlaybackException.TYPE_SOURCE) {
+            return false
+        }
+        var cause: Throwable? = e.sourceException
+        while (cause != null) {
+            if (cause is BehindLiveWindowException) {
+                return true
+            }
+            cause = cause.cause
+        }
+        return false
+    }
+
+    private fun onPlayerError(error: ExoPlaybackException) {
+        if (isBehindLiveWindow(error)) {
+            videoPlayer.init(context!!, pvVideoPlayerPlayer)
+            videoPlayer.play(url)
+        } else {
+            tvVideoPlayerError.visibility = View.VISIBLE
+            flVideoPlayerControls.visibility = View.GONE
+        }
+
     }
 
 

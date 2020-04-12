@@ -12,10 +12,14 @@ interface SourceSettingsViewModel : ViewModel {
 
     interface ViewEvent : ViewModel.ViewEvent {
         fun startScreen()
+        fun addSource(model: DataSourcePresentationModel)
+        fun removeSource(id: String)
     }
 
     interface ViewData : ViewModel.ViewData {
         fun getLiveSources(): LiveData<Pair<List<DataSourcePresentationModel>, DataSourcePresentationModel?>>
+        fun getRemovedSource(): LiveData<String>
+        fun getAddedSource(): LiveData<DataSourcePresentationModel>
     }
 
     interface Output : ViewModel.Output

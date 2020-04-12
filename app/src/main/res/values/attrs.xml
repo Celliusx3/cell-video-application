@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="AspectAwareImageView">
-        <attr name="aspect_width" format="float"/>
-        <attr name="aspect_height" format="float"/>
-        <attr name="aspect_adjust" format="enum">
-            <enum name="width" value="1"/>
-            <enum name="height" value="0"/>
-        </attr>
+
+    <attr name="aspect_width" format="float"/>
+    <attr name="aspect_height" format="float"/>
+    <attr name="aspect_adjust" format="enum">
+        <enum name="width" value="1"/>
+        <enum name="height" value="0"/>
+    </attr>
+
+    <declare-styleable name="AspectAwareCardView">
+        <attr name="aspect_width"/>
+        <attr name="aspect_height"/>
+        <attr name="aspect_adjust"/>
     </declare-styleable>
+
+    <declare-styleable name="AspectAwareImageView">
+        <attr name="aspect_width"/>
+        <attr name="aspect_height"/>
+        <attr name="aspect_adjust"/>
+    </declare-styleable>
+
+
 </resources>

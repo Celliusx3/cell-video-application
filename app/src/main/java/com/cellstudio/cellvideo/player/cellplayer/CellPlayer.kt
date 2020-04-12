@@ -2,6 +2,7 @@ package com.cellstudio.cellvideo.player.cellplayer
 
 import android.content.Context
 import com.cellstudio.cellvideo.player.cellplayer.models.CellPlayerPlaySpeed
+import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.ui.PlayerView
 
 interface CellPlayer {
@@ -23,7 +24,7 @@ interface CellPlayer {
 
     interface CellPlayerListener {
         fun onBufferListener()
-        fun onErrorListener(throwable: Throwable)
+        fun onErrorListener(throwable: ExoPlaybackException)
         fun onTimeListener(position: Long, duration: Long)
         fun onPlayListener()
         fun onPauseListener()
