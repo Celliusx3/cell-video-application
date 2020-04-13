@@ -22,6 +22,6 @@ interface DetailsViewModel : ViewModel {
     interface Output : ViewModel.Output
 
     interface Input : ViewModel.Input {
-        val id: Int
+        val id: String
     }
 }

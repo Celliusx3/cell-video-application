@@ -13,12 +13,6 @@ object Constants {
     const val Custom = "Custom"
     const val Random = "Random"
 
-    // Jike Video Typess
-    const val movies = "电影"
-    const val tvSeries = "电视剧"
-    const val anime = "动漫"
-    const val tvShows = "综艺"
-
     const val url = "url"
     const val type = "type"
     const val id = "id"

@@ -42,6 +42,7 @@
         
         <activity android:name="com.cellstudio.cellvideo.presentation.screens.livesource.LiveSourceActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

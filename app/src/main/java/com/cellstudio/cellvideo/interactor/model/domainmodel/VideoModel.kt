@@ -1,7 +1,6 @@
 package com.cellstudio.cellvideo.interactor.model.domainmodel
 
 import com.cellstudio.cellvideo.data.entities.eyunzhu.EYunZhuDetails
-import com.cellstudio.cellvideo.data.entities.jike.JikeVideo
 
 data class VideoModel(
     val id: String,
@@ -19,24 +18,6 @@ data class VideoModel(
     val videoUrl: Map<String, String>?
 ) {
     companion object {
-        fun create(jike: JikeVideo): VideoModel {
-            return VideoModel(
-                jike.id,
-                jike.name,
-                jike.imageUrl ?: "",
-                381,
-                270,
-                jike.score,
-                jike.director,
-                jike.star,
-                jike.type,
-                jike.area,
-                jike.year,
-                jike.summary,
-                hashMapOf(Pair("", jike.videoUrl))
-            )
-        }
-
         fun create(model: EYunZhuDetails): VideoModel {
             return VideoModel(
                 model.vid ?: "",

@@ -3,7 +3,6 @@ package com.cellstudio.cellvideo.di.modules
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.cellstudio.cellvideo.interactor.viewmodel.details.DetailsViewModelImpl
-import com.cellstudio.cellvideo.interactor.viewmodel.main.MainViewModelImpl
 import com.cellstudio.cellvideo.interactor.viewmodel.main.PageViewModelImpl
 import com.cellstudio.cellvideo.interactor.viewmodel.search.SearchViewModelImpl
 import com.cellstudio.cellvideo.interactor.viewmodel.settings.AddSourceViewModelImpl
@@ -20,11 +19,6 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SplashViewModelImpl::class)
     abstract fun bindSplashViewModel(splashViewModel: SplashViewModelImpl): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(MainViewModelImpl::class)
-    abstract fun bindMainViewModel(mainViewModel: MainViewModelImpl): ViewModel
 
     @Binds
     @IntoMap

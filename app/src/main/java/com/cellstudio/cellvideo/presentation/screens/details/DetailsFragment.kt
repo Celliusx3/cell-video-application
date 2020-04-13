@@ -104,7 +104,7 @@ class DetailsFragment : BaseInjectorFragment() {
         viewModel = ViewModelProvider(this,viewModelFactory).get(DetailsViewModelImpl::class.java)
 
         viewModel.setInput(object: DetailsViewModel.Input {
-            override val id: Int = Integer.parseInt(model?.id ?: "")
+            override val id: String = model?.id?: ""
         })
         viewModel.getViewEvent().startScreen()
         viewModel.getViewData().getDetails().observe(this, Observer {

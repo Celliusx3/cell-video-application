@@ -37,24 +37,24 @@ data class LiveSourceModel(
     val image: String,
     val url: String,
     val imageWidth: Int,
-    val imageHeight: Int
+    val imageHeight: Int,
+    val type: ContentType
 ) {
+    enum class ContentType {
+        VIDEO,
+        LIVESOURCE
+    }
+
     companion object {
         fun create(model: EYunZhuLiveSourceDetails): LiveSourceModel {
-//            val map = hashMapOf<String, String>()
-//            model.data.forEach { map[it.name] = it.url }
-//            return LiveSourceModel(
-//                model.id.toString(),
-//                model.name,
-//                map
-//            )
             return LiveSourceModel(
                 "",
                 "",
                 "",
                 "",
                 0,
-                0
+                0,
+                ContentType.LIVESOURCE
             )
         }
 
@@ -65,7 +65,20 @@ data class LiveSourceModel(
                 model.metadata["tvg-logo"]?: "",
                 model.url,
                 379,
-                268
+                268,
+                ContentType.LIVESOURCE
+            )
+        }
+
+        fun create(id: String, name: String, contentType: ContentType): LiveSourceModel {
+            return LiveSourceModel(
+                id,
+                name,
+                "",
+                "",
+                0,
+                0,
+                contentType
             )
         }
     }

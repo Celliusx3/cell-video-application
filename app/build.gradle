@@ -47,6 +47,7 @@ dependencies {
     ext.GRAVITY_SNAP_VERSION = "2.2.0"
     ext.MATERIAL_VERSION = "1.1.0"
     ext.ROOM_VERSION = "2.2.5"
+    ext.DEEPLINK_VERSION = "5.1.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -97,6 +98,10 @@ dependencies {
 
     // optional - RxJava support for Room
     implementation "androidx.room:room-rxjava2:${ROOM_VERSION}"
+
+    // deeplink
+    implementation "com.airbnb:deeplinkdispatch:${DEEPLINK_VERSION}"
+    annotationProcessor "com.airbnb:deeplinkdispatch-processor:${DEEPLINK_VERSION}"
 
 
 }

@@ -30,17 +30,29 @@ data class LiveSourcePresentationModel(
     val image: String,
     val imageWidth: Int,
     val imageHeight: Int,
-    val url: String
+    val url: String,
+    val type: ContentType
 ): Parcelable {
+
+    enum class ContentType {
+        VIDEO,
+        LIVESOURCE
+    }
+
     companion object {
         fun create(model: LiveSourceModel): LiveSourcePresentationModel {
+            val contentType = if (model.type == LiveSourceModel.ContentType.LIVESOURCE) {
+                ContentType.LIVESOURCE
+            } else { ContentType.VIDEO }
+
             return LiveSourcePresentationModel(
                 model.id,
                 model.name,
                 model.image,
                 model.imageWidth,
                 model.imageHeight,
-                model.url
+                model.url,
+                contentType
             )
         }
     }

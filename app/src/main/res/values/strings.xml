@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">CellVideo</string>
 
+    <string name="deeplink_scheme">cellvid</string>
+
     <string name="search">Search</string>
     <string name="search_hint">Search…</string>
     <string name="episodes">Episodes</string>

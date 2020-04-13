@@ -2,9 +2,12 @@ package com.cellstudio.cellvideo.interactor.viewmodel.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import com.cellstudio.cellvideo.constants.Constants
 import com.cellstudio.cellvideo.domain.interactor.page.PageInteractor
 import com.cellstudio.cellvideo.interactor.model.presentationmodel.FilterPresentationModel
 import com.cellstudio.cellvideo.interactor.model.presentationmodel.LiveSourcePresentationModel
+import com.cellstudio.cellvideo.interactor.model.presentationmodel.VideoPresentationModel
 import com.cellstudio.cellvideo.interactor.scheduler.SchedulerProvider
 import com.cellstudio.cellvideo.interactor.viewmodel.base.BaseViewModel
 import io.reactivex.Observable
@@ -15,35 +18,48 @@ class PageViewModelImpl @Inject constructor(scheduler: SchedulerProvider, privat
     private lateinit var input: PageViewModel.Input
     private var page: Int ?= 0
 
-    private val liveSources: MutableLiveData<List<LiveSourcePresentationModel>> = MutableLiveData()
+    private val liveSources: MutableLiveData<Pair<List<LiveSourcePresentationModel>, Boolean>> = MutableLiveData()
     private val isGridView: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply {value = false}
     private val openFilterSelectionDialog: MutableLiveData<Pair<List<FilterPresentationModel>, FilterPresentationModel?>> = MutableLiveData()
     private val selected: MutableLiveData<FilterPresentationModel> = MutableLiveData()
+    private val details: MutableLiveData<VideoPresentationModel> = MutableLiveData()
 
     override fun setInput(input: PageViewModel.Input) {
         this.input = input
-        selected.value = input.filter?.models?.get(0)
+        selected.value = input.filter?.models?.find { it.id == input.data[Constants.id]}
     }
 
     override fun getViewEvent(): PageViewModel.ViewEvent {
         return object: PageViewModel.ViewEvent {
             override fun onLoadMore() {
-                test()
+                subscribeLiveSourceAPI(false, mapOf(Pair(Constants.type, input.data["type"]?: ""), Pair(Constants.id, selected.value?.id?:"")))
             }
 
-            private fun callLiveSourceAPI(page: Int): Observable<List<LiveSourcePresentationModel>> {
-                return pageInteractor.getLiveSources(page, 50, input.data)
+            override fun onGetDetails(id: String) {
+                loadingLiveData.value = true
+                compositeDisposable.add(pageInteractor.getDetails(id)
+                    .map {VideoPresentationModel.create(it)}
+                    .compose(applySchedulers())
+                    .subscribe {
+                        loadingLiveData.value = false
+                        details.value = it
+                    })
+            }
+
+            private fun callLiveSourceAPI(page: Int, map: Map<String, String>): Observable<List<LiveSourcePresentationModel>> {
+                return pageInteractor.getLiveSources(page, 50, map)
                     .map {it.map { LiveSourcePresentationModel.create(it) }}
                     .compose(applySchedulers())
             }
 
-            private fun test() {
+            private fun subscribeLiveSourceAPI(isNewStart: Boolean, map: Map<String, String>) {
+                if (isNewStart) { page = 0 }
                 loadingLiveData.value = true
                 page?.let {value ->
-                    compositeDisposable.add(callLiveSourceAPI(value)
+                    compositeDisposable.add(callLiveSourceAPI(value, map)
                         .subscribe {
                             loadingLiveData.value = false
-                            liveSources.value = it
+                            liveSources.value = Pair(it, isNewStart)
                             page =  value + 1
                         }
                     )
@@ -51,7 +67,7 @@ class PageViewModelImpl @Inject constructor(scheduler: SchedulerProvider, privat
             }
 
             override fun startScreen() {
-                test()
+                subscribeLiveSourceAPI(true, input.data)
             }
 
             override fun onViewTypeClicked() {
@@ -59,25 +75,21 @@ class PageViewModelImpl @Inject constructor(scheduler: SchedulerProvider, privat
             }
 
             override fun onFilterButtonClicked() {
-//                openFilterSelectionDialog.value = Pair(input.filter?.models?: listOf(), selected.value)
+                openFilterSelectionDialog.value = Pair(input.filter?.models?: listOf(), selected.value)
             }
 
             override fun onFilterSelected(filter: FilterPresentationModel) {
-//                selected.value = filter
-//                loadingLiveData.value = true
-//                compositeDisposable.add(callLiveSourceAPI()
-//                    .subscribe {
-//                        loadingLiveData.value = false
-//                        liveSources.value = it
-//                    }
-//                )
+                selected.value = filter
+                subscribeLiveSourceAPI(true, mapOf(Pair(Constants.type, input.data["type"]?: ""), Pair(Constants.id, filter.id)))
             }
         }
     }
 
     override fun getViewData(): PageViewModel.ViewData {
         return object: PageViewModel.ViewData {
-            override fun getLiveSources(): LiveData<List<LiveSourcePresentationModel>> = liveSources
+            override fun getSubtitle(): LiveData<String> = Transformations.map (selected) { it.displayText }
+            override fun getDetails(): LiveData<VideoPresentationModel>  = details
+            override fun getLiveSources(): LiveData<Pair<List<LiveSourcePresentationModel>, Boolean>> = liveSources
             override fun getIsGridView(): LiveData<Boolean> = isGridView
             override fun getOpenFilterDialog(): LiveData<Pair<List<FilterPresentationModel>, FilterPresentationModel?>> = openFilterSelectionDialog
             override val loading: LiveData<Boolean> = loadingLiveData

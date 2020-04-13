@@ -9,7 +9,6 @@ data class PagePresentationModel(
     val id: Int,
     val name: String,
     val icon: Int,
-    val viewType: PageViewTypePresentationModel,
     val filter: FilterListPresentationModel?,
     val datas: Map<String, String>
 ): Parcelable {
@@ -19,14 +18,9 @@ data class PagePresentationModel(
                 model.id,
                 model.name,
                 model.icon,
-                PageViewTypePresentationModel.VIEW_TYPE_TEXT,
                 model.filter?.let { FilterListPresentationModel.create(it) },
                 model.datas
             )
         }
     }
-}
-
-enum class PageViewTypePresentationModel {
-    VIEW_TYPE_TEXT
 }

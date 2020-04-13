@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar"
+            android:id="@+id/ablToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
@@ -29,6 +29,7 @@
                 app:collapsedTitleTextAppearance="@style/AppTheme.CollapsedToolBarTitle"
                 app:expandedTitleTextAppearance="@style/AppTheme.ExpandedToolBarTitle"
                 app:expandedTitleMarginStart="16dp"
+                app:expandedTitleMarginBottom="16dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
                 
                 <View
@@ -43,15 +44,31 @@
                     app:layout_collapseMode="pin"
                     app:titleMarginStart="8dp"
                     app:popupTheme="@style/AppTheme.PopupOverlay" >
-                    
+
                     <ImageView
                         android:id="@+id/ivProfile"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:background="@drawable/selector_ripple"
                         android:src="@drawable/ic_user"/>
-                    
+
                 </androidx.appcompat.widget.Toolbar>
+
+                <FrameLayout
+                    android:id="@+id/flTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="16dp"
+                    app:layout_collapseMode="pin">
+                    <Button
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:stateListAnimator="@null"
+                        android:onClick="@{() -> viewModel.viewEvent.onFilterButtonClicked()}"
+                        android:text="@{viewModel.viewData.subtitle}"/>
+                </FrameLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -67,39 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    android:padding="8dp">-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center_vertical"-->
-<!--                        android:text="GG"/>-->
-<!--                    -->
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:background="@drawable/selector_ripple"-->
-<!--                        android:onClick="@{() -> viewModel.viewEvent.onFilterButtonClicked()}"-->
-<!--                        android:layout_gravity="center_vertical"-->
-<!--                        android:text="GG"/>-->
-<!--                    -->
-<!--                    <ImageView-->
-<!--                        android:tint="@color/text_black"-->
-<!--                        android:src = "@{viewModel.viewData.isGridView ? @drawable/ic_home_white_24dp: @drawable/ic_back}"-->
-<!--                        android:background="@drawable/selector_ripple"-->
-<!--                        android:onClick="@{() -> viewModel.viewEvent.onViewTypeClicked()}"-->
-<!--                        android:layout_width="48dp"-->
-<!--                        android:padding = "8dp"-->
-<!--                        android:visibility="gone"-->
-<!--                        android:layout_height="48dp"/>-->
-<!--                    -->
-<!--                </LinearLayout>-->
-
+                
                 <androidx.recyclerview.widget.RecyclerView
                     android:id= "@+id/rvPageMain"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"

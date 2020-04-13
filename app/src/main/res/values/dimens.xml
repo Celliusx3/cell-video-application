@@ -111,4 +111,8 @@
     <dimen name="user_guide_popup_pointer_height">11dp</dimen>
     <dimen name="user_guide_layout_height">136dp</dimen>
 
+    <dimen name="space_to_change">32dp</dimen>
+    <dimen name="space_to_translate">32dp</dimen>
+
+
 </resources>

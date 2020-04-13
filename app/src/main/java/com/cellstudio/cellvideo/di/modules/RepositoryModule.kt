@@ -7,7 +7,6 @@ import com.cellstudio.cellvideo.data.entities.general.DataSource
 import com.cellstudio.cellvideo.data.repositories.customRepository.CustomRepositoryImpl
 import com.cellstudio.cellvideo.data.repositories.eyunzhurepository.EYunZhuRepository
 import com.cellstudio.cellvideo.data.repositories.eyunzhurepository.EYunZhuRepositoryImpl
-import com.cellstudio.cellvideo.data.repositories.jikerepository.JikeRepositoryImpl
 import com.cellstudio.cellvideo.data.repositories.m3urepository.M3URepositoryImpl
 import com.cellstudio.cellvideo.data.repositories.settingsRepository.SettingsRepositoryImpl
 import com.cellstudio.cellvideo.data.services.storage.StorageService
@@ -29,7 +28,6 @@ class RepositoryModule {
 
         return when (storage.getSelectedDataSource(SharedPrefConstants.SELECTED_DATA_SOURCE)?.id) {
             DataSource.EYUNZHU.id -> EYunZhuRepositoryImpl(httpClient)
-            DataSource.JIKE.id -> JikeRepositoryImpl(httpClient)
             DataSource.M3U.id -> M3URepositoryImpl(httpClient)
             else -> CustomRepositoryImpl(httpClient, storage)
         }

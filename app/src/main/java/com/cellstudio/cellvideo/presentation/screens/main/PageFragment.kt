@@ -10,11 +10,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cellstudio.cellvideo.R
 import com.cellstudio.cellvideo.databinding.FragmentPageBinding
 import com.cellstudio.cellvideo.interactor.model.presentationmodel.FilterListPresentationModel
+import com.cellstudio.cellvideo.interactor.model.presentationmodel.FilterPresentationModel
+import com.cellstudio.cellvideo.interactor.model.presentationmodel.LiveSourcePresentationModel
 import com.cellstudio.cellvideo.interactor.viewmodel.main.PageViewModel
 import com.cellstudio.cellvideo.interactor.viewmodel.main.PageViewModelImpl
 import com.cellstudio.cellvideo.presentation.adapters.LiveSourceAdapter
 import com.cellstudio.cellvideo.presentation.base.BaseInjectorFragment
+import com.cellstudio.cellvideo.presentation.screens.SingleSelectionBottomSheetFragment
+import com.cellstudio.cellvideo.presentation.screens.details.DetailsActivity
 import com.cellstudio.cellvideo.presentation.screens.livesource.LiveSourceActivity
+import com.cellstudio.cellvideo.presentation.screens.settings.SettingsActivity
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_page.*
 
 
@@ -50,9 +56,13 @@ class PageFragment: BaseInjectorFragment() {
     private fun setupAdapter() {
         adapter = LiveSourceAdapter(mutableListOf(), context!!)
         adapter.setListener(object: LiveSourceAdapter.Listener {
-            override fun onModelClicked(model: String) {
-                val intent = LiveSourceActivity.getCallingIntent(context!!, model)
-                startActivity(intent)
+            override fun onModelClicked(model: LiveSourcePresentationModel) {
+                if (model.type == LiveSourcePresentationModel.ContentType.LIVESOURCE) {
+                    val intent = LiveSourceActivity.getCallingIntent(context!!, model.url)
+                    startActivity(intent)
+                } else {
+                    pageViewModel.getViewEvent().onGetDetails(model.id)
+                }
             }
         })
         rvPageMain.layoutManager = linearLayoutManager
@@ -79,11 +89,34 @@ class PageFragment: BaseInjectorFragment() {
     override fun onBindData(view: View?) {
         super.onBindData(view)
         pageViewModel.getViewData().getLiveSources().observe(this, Observer {
-            adapter.addDatas(it)
+            if (it.second) {
+                adapter.updateData(it.first.toMutableList())
+            } else {
+                adapter.addDatas(it.first)
+            }
         })
 
         pageViewModel.getViewData().loading.observe(this, Observer {
             adapter.setLoading(it)
+        })
+
+        pageViewModel.getViewData().getDetails().observe(this, Observer {
+            val intent = DetailsActivity.getCallingIntent(context!!, it)
+            startActivity(intent)
+        })
+
+        pageViewModel.getViewData().getOpenFilterDialog().observe(this, Observer {
+            val fragment = SingleSelectionBottomSheetFragment<FilterPresentationModel>()
+            fragment.initialSelection = it.second
+            fragment.selectionsList = it.first
+            fragment.listener = object: SingleSelectionBottomSheetFragment.Listener<FilterPresentationModel> {
+                override fun onFragmentReady() {}
+                override fun onHide() {}
+                override fun onSelected(model: FilterPresentationModel) {
+                    pageViewModel.getViewEvent().onFilterSelected(model)
+                }
+            }
+            fragment.show(childFragmentManager, null)
         })
 
 //        pageViewModel.getViewData().getIsGridView().observe(this, Observer {
@@ -109,6 +142,7 @@ class PageFragment: BaseInjectorFragment() {
         ctlToolbar.title = title
         setupAdapter()
         setupNestedScrollView()
+        setupToolbar(false)
 //        toolbar.setOnMenuItemClickListener(object: Toolbar.OnMenuItemClickListener {
 //            override fun onMenuItemClick(item: MenuItem?): Boolean {
 //                val id = item?.itemId
@@ -122,26 +156,31 @@ class PageFragment: BaseInjectorFragment() {
 //            }
 //        })
 
-//        ivProfile.setOnClickListener {
-//            val intent = SettingsActivity.getCallingIntent(context!!)
-//            startActivity(intent)
-//        }
+        ivProfile.setOnClickListener {
+            val intent = SettingsActivity.getCallingIntent(context!!)
+            startActivity(intent)
+        }
 
         pageViewModel.getViewEvent().startScreen()
 
-//        pageViewModel.getViewData().getOpenFilterDialog().observe(this, Observer {
-//            val fragment = SingleSelectionBottomSheetFragment<FilterPresentationModel>()
-//            fragment.initialSelection = it.second
-//            fragment.selectionsList = it.first
-//            fragment.listener = object: SingleSelectionBottomSheetFragment.Listener<FilterPresentationModel> {
-//                override fun onFragmentReady() {}
-//                override fun onHide() {}
-//                override fun onSelected(model: FilterPresentationModel) {
-//                    pageViewModel.getViewEvent().onFilterSelected(model)
-//                }
-//            }
-//            fragment.show(childFragmentManager, null)
-//        })
+
+    }
+
+    private fun setupToolbar(isSearchActive: Boolean) {
+        if (!isSearchActive) {
+            return
+        }
+        toolbar.inflateMenu(R.menu.menu_main)
+        val spaceToChange = resources.getDimensionPixelSize(R.dimen.space_to_change)
+        val searchMenuSize = resources.getDimensionPixelSize(R.dimen.space_to_translate)
+        ablToolbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val startPoint = appBarLayout!!.totalScrollRange - spaceToChange
+            var percentage = 0f
+            if (Math.abs(verticalOffset) - startPoint > 0) {
+                percentage = (Math.abs(verticalOffset) - startPoint).toFloat() / spaceToChange
+            }
+            flTest.translationX = -searchMenuSize * (percentage)
+        })
     }
 
     private fun setupNestedScrollView() {

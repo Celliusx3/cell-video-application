@@ -7,6 +7,7 @@ import com.cellstudio.cellvideo.data.entities.m3u.M3UPage
 import com.cellstudio.cellvideo.domain.repository.DataSourceRepository
 import com.cellstudio.cellvideo.interactor.model.domainmodel.LiveSourceModel
 import com.cellstudio.cellvideo.interactor.model.domainmodel.PageModel
+import com.cellstudio.cellvideo.interactor.model.domainmodel.VideoModel
 import io.reactivex.Observable
 
 class M3URepositoryImpl(private val httpClient: HttpClient): DataSourceRepository {
@@ -57,5 +58,9 @@ class M3URepositoryImpl(private val httpClient: HttpClient): DataSourceRepositor
 
     private fun getApiService(): M3UService {
         return httpClient.getM3UApiService()
+    }
+
+    override fun getDetails(id: String): Observable<VideoModel> {
+        return Observable.error(Exception("Fuck!"))
     }
 }

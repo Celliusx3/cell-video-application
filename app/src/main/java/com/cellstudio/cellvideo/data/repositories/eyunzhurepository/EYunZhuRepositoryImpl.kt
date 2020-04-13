@@ -20,6 +20,11 @@ class EYunZhuRepositoryImpl(private val httpClient: HttpClient): DataSourceRepos
     }
 
     override fun getDetails(id: Int): Observable<VideoModel> {
+        return getApiService().getDetails(id.toString())
+            .map {VideoModel.create( it.data ) }
+    }
+
+    override fun getDetails(id: String): Observable<VideoModel> {
         return getApiService().getDetails(id)
             .map {VideoModel.create( it.data ) }
     }
@@ -34,9 +39,13 @@ class EYunZhuRepositoryImpl(private val httpClient: HttpClient): DataSourceRepos
     }
 
     override fun getLiveSource(map: Map<String, Any>): Observable<List<LiveSourceModel>> {
-        return getApiService().getLiveSources()
-            .map {it.data.map { LiveSourceModel.create(it)}}
+        return getApiService().getTopVideos()
+            .map {it.data[0].data.map { LiveSourceModel.create(it.value, it.key, LiveSourceModel.ContentType.VIDEO) }}
+//        return getApiService().getLiveSources()
+//            .map {it.data.map { LiveSourceModel.create(it)}}
     }
+
+
 
     override fun validateDataSource(url: String): Observable<Boolean> {
         return httpClient.getM3UApiService().getLiveSources(url)
@@ -44,5 +53,7 @@ class EYunZhuRepositoryImpl(private val httpClient: HttpClient): DataSourceRepos
     }
 
     override fun search(id: String) {}
+
+
 
 }

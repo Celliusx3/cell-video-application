@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.provider.Settings
 
-abstract class BaseEnvironment(val context: Context) : Environment {
+class BaseEnvironment(val context: Context) : Environment {
 
     override fun getAppName(): String {
         return ""

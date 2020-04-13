@@ -65,13 +65,13 @@ class LiveSourceAdapter(private var models: MutableList<LiveSourcePresentationMo
             val model = models[position]
             holder.binding.model = model.name
             holder.binding.imageUrl = model.image
-            holder.binding.listener = View.OnClickListener { listener?.onModelClicked(model.url) }
+            holder.binding.listener = View.OnClickListener { listener?.onModelClicked(model) }
         } else if (holder is ItemImageViewHolder) {
             val model = models[position]
             holder.binding.imageUrl = model.image
             holder.binding.name = model.name
 //            holder.binding.ivLogo.setAspect(model.imageWidth.toFloat()/ model.imageHeight.toFloat())
-            holder.binding.listener = View.OnClickListener { listener?.onModelClicked(model.url) }
+            holder.binding.listener = View.OnClickListener { listener?.onModelClicked(model) }
         }
     }
 
@@ -95,7 +95,7 @@ class LiveSourceAdapter(private var models: MutableList<LiveSourcePresentationMo
     }
 
     interface Listener {
-        fun onModelClicked(url: String)
+        fun onModelClicked(model: LiveSourcePresentationModel)
     }
 
     class ItemTextViewHolder: RecyclerView.ViewHolder {

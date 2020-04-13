@@ -9,12 +9,17 @@ import com.cellstudio.cellvideo.data.services.storage.StorageService
 import com.cellstudio.cellvideo.domain.repository.DataSourceRepository
 import com.cellstudio.cellvideo.interactor.model.domainmodel.LiveSourceModel
 import com.cellstudio.cellvideo.interactor.model.domainmodel.PageModel
+import com.cellstudio.cellvideo.interactor.model.domainmodel.VideoModel
 import io.reactivex.Observable
 
 class CustomRepositoryImpl(private val httpClient: HttpClient, private val storage: StorageService): DataSourceRepository {
     override fun getPages(): List<PageModel> {
         return listOf(CustomPage.HomePage).map { PageModel.create(it, hashMapOf(Pair(Constants.url
         , storage.getSelectedDataSource(SharedPrefConstants.SELECTED_DATA_SOURCE)?.url?:""))) }
+    }
+
+    override fun getDetails(id: String): Observable<VideoModel> {
+        return Observable.error(Exception("Fuck!"))
     }
 
     override fun getLiveSource(map: Map<String, Any>): Observable<List<LiveSourceModel>> {

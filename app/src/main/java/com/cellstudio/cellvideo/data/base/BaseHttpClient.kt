@@ -2,7 +2,6 @@ package com.cellstudio.cellvideo.data.base
 
 import android.util.Log.INFO
 import com.cellstudio.cellvideo.data.api.eyunzhu.EYunZhuService
-import com.cellstudio.cellvideo.data.api.jike.JikeService
 import com.cellstudio.cellvideo.data.api.m3u.M3UService
 import okhttp3.OkHttpClient
 import okhttp3.internal.platform.Platform
@@ -13,11 +12,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class BaseHttpClient() : HttpClient {
+class BaseHttpClient : HttpClient {
 
     private val okHttpClient: OkHttpClient
     private lateinit var eYunZhuService: EYunZhuService
-    private lateinit var jikeService: JikeService
     private lateinit var m3uService: M3UService
 
     init {
@@ -31,10 +29,6 @@ class BaseHttpClient() : HttpClient {
 
     override fun getM3UApiService(): M3UService {
         return m3uService
-    }
-
-    override fun getJikeApiService(): JikeService {
-        return jikeService
     }
 
     private fun createOkHttpClient(): OkHttpClient {
@@ -51,7 +45,6 @@ class BaseHttpClient() : HttpClient {
 
     private fun createService(okHttpClient: OkHttpClient) {
         eYunZhuService = createEYunZhuService(okHttpClient)
-        jikeService = createJikeService(okHttpClient)
         m3uService = createM3UService(okHttpClient)
     }
 
@@ -59,12 +52,6 @@ class BaseHttpClient() : HttpClient {
         val retrofit = getRetrofit(client, "https://api.eyunzhu.com/", GsonConverterFactory.create())
 
         return retrofit.create(EYunZhuService::class.java)
-    }
-
-    private fun createJikeService(client: OkHttpClient): JikeService {
-        val retrofit = getRetrofit(client, "http://jike.freevar.com/", GsonConverterFactory.create())
-
-        return retrofit.create(JikeService::class.java)
     }
 
     private fun createM3UService(client: OkHttpClient): M3UService {
