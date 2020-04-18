@@ -1,6 +1,5 @@
 package com.cellstudio.cellvideo.domain.interactor.settings
 
-import android.util.Log
 import com.cellstudio.cellvideo.data.entities.general.DataSource
 import com.cellstudio.cellvideo.domain.repository.DataSourceRepository
 import com.cellstudio.cellvideo.domain.repository.SettingsRepository
@@ -20,10 +19,7 @@ class SettingsInteractorImpl(private val repository: SettingsRepository, private
 
     override fun getDataSources(): Observable<List<DataSourceModel>> {
         return repository.getSources().map {
-            it.map {
-                Log.d("Testing", it.id)
-                DataSourceModel.create(it)
-            }
+            it.map { DataSourceModel.create(it) }
         }
     }
 
@@ -39,5 +35,9 @@ class SettingsInteractorImpl(private val repository: SettingsRepository, private
 
     override fun validateDateSource(url: String): Observable<Boolean> {
         return dataSourceRepository.validateDataSource(url)
+    }
+
+    override fun getPrivacyPolicy(): String {
+        return repository.getPrivacyPolicy()
     }
 }

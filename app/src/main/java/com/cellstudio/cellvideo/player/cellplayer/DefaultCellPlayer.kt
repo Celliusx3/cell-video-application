@@ -4,18 +4,20 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.cellstudio.cellvideo.player.cellplayer.models.CellPlayerPlaySpeed
+import com.cellstudio.cellvideo.player.cellplayer.models.QualityLevel
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.drm.DrmSessionManager
 import com.google.android.exoplayer2.drm.ExoMediaCrypto
-import com.google.android.exoplayer2.source.BehindLiveWindowException
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource
+import com.google.android.exoplayer2.trackselection.*
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.*
-import com.google.android.exoplayer2.upstream.cache.Cache
+import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,10 +28,8 @@ import java.util.concurrent.TimeUnit
 
 class DefaultCellPlayer: CellPlayer {
     private var disTimer: Disposable? = null
-
-    private val DOWNLOAD_CONTENT_DIRECTORY = "downloads"
-    private var downloadCache: Cache? = null
-
+    private var trackSelector: MappingTrackSelector? = null
+    private val qualityLevels: MutableList<QualityLevel> = mutableListOf<QualityLevel>()
 
     private var player: SimpleExoPlayer ?= null
     private var dataSourceFactory: DataSource.Factory ?= null
@@ -37,8 +37,9 @@ class DefaultCellPlayer: CellPlayer {
     private val listeners = mutableListOf<CellPlayer.CellPlayerListener>()
 
     override fun init(context: Context, playerView: PlayerView) {
-        initExoPlayer(context, playerView)
-        dataSourceFactory = buildDataSourceFactory(context)
+        val bandwidthMeter: BandwidthMeter = DefaultBandwidthMeter.Builder(context).build()
+        initExoPlayer(context, bandwidthMeter, playerView)
+        dataSourceFactory = buildDataSourceFactory(context, bandwidthMeter)
     }
 
     override fun addPlayerListener(listener: CellPlayer.CellPlayerListener) {
@@ -70,13 +71,19 @@ class DefaultCellPlayer: CellPlayer {
 
     }
 
+    override fun getCellPlayerData(): CellPlayer.CellPlayerData {
+        return object: CellPlayer.CellPlayerData{
+            override fun getQualityLevels(): List<QualityLevel> {
+                return qualityLevels
+            }
+        }
+    }
+
     override fun play(url: String) {
         val uri = Uri.parse(url)
         val videoSource = createCleanDataSource(uri, "", DrmSessionManager.getDummyDrmSessionManager<ExoMediaCrypto>(), dataSourceFactory!!)
         player?.prepare(videoSource)
         player?.playWhenReady = true
-//        val loading_ripple_scale_interpolator = createCleanDataSource(Uri)
-//        player.prepare()
     }
 
     override fun play() {
@@ -108,8 +115,17 @@ class DefaultCellPlayer: CellPlayer {
         player?.seekTo(tempPosition)
     }
 
-    private fun initExoPlayer(context: Context, playerView: PlayerView) {
-        player = SimpleExoPlayer.Builder(context).build()
+    private fun initExoPlayer(context: Context, bandwidthMeter: BandwidthMeter, playerView: PlayerView) {
+
+        val adaptiveTrackSelection: TrackSelection.Factory =
+            AdaptiveTrackSelection.Factory()
+        trackSelector = DefaultTrackSelector(context, adaptiveTrackSelection)
+
+        player = SimpleExoPlayer.Builder(context)
+            .setBandwidthMeter(bandwidthMeter)
+            .setTrackSelector(trackSelector!!)
+            .build()
+
         playerView.player = player
         playerView.useController = false
         player?.addListener(playerEventListener)
@@ -136,61 +152,18 @@ class DefaultCellPlayer: CellPlayer {
         }
     }
 
-    private fun buildDataSourceFactory(context: Context): DataSource.Factory {
-        return DefaultDataSourceFactory(context, buildHttpDataSourceFactory("Test"))
-//        return buildReadOnlyCacheDataSource(upstreamFactory, getDownloadCache())
+    private fun buildDataSourceFactory(context: Context, bandwidthMeter: BandwidthMeter): DataSource.Factory {
+        return DefaultDataSourceFactory(context, buildHttpDataSourceFactory(context, bandwidthMeter, "Test"))
     }
 
-    private fun buildHttpDataSourceFactory(userAgent: String): HttpDataSource.Factory {
+    private fun buildHttpDataSourceFactory(context: Context, bandwidthMeter: BandwidthMeter, userAgent: String): HttpDataSource.Factory {
         return DefaultHttpDataSourceFactory(userAgent,
+            DefaultBandwidthMeter.Builder(context).build(),
             DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
             DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
            true)
 
     }
-
-    private fun isBehindLiveWindow(e: ExoPlaybackException): Boolean {
-        if (e.type != ExoPlaybackException.TYPE_SOURCE) {
-            return false
-        }
-        var cause: Throwable? = e.sourceException
-        while (cause != null) {
-            if (cause is BehindLiveWindowException) {
-                return true
-            }
-            cause = cause.cause
-        }
-        return false
-    }
-
-//    @Synchronized
-//    protected fun getDownloadCache(): Cache {
-//        if (downloadCache == null) {
-//            val downloadContentDirectory = File(getDownloadDirectory(), DOWNLOAD_CONTENT_DIRECTORY)
-//            downloadCache =
-//                SimpleCache(downloadContentDirectory, NoOpCacheEvictor(), getDatabaseProvider())
-//        }
-//        return downloadCache
-//    }
-
-
-//    private fun buildReadOnlyCacheDataSource(upstreamFactory: DataSource.Factory, cache: Cache): CacheDataSourceFactory {
-//        return CacheDataSourceFactory(cache,
-//            upstreamFactory, FileDataSource.Factory(),
-//        /* cacheWriteDataSinkFactory= */ null,
-//        CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR,
-//        /* eventListener= */ null)
-//    }
-
-//    private fun getDownloadDirectory(): File {
-//        if (downloadDirectory == null) {
-//            downloadDirectory = getExternalFilesDir(null)
-//            if (downloadDirectory == null) {
-//                downloadDirectory = getFilesDir()
-//            }
-//        }
-//        return downloadDirectory
-//    }
 
     override fun setMute(isMute: Boolean) {
         player?.volume = if (isMute) 0.0f else 1.0f
@@ -219,15 +192,24 @@ class DefaultCellPlayer: CellPlayer {
         override fun onLoadingChanged(isLoading: Boolean) {
             super.onLoadingChanged(isLoading)
             Log.d(TAG, "loading [$isLoading]")
+            listeners.forEach { it.onLoadingListener(isLoading) }
         }
 
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             super.onPlayerStateChanged(playWhenReady, playbackState)
             when (playbackState) {
-                Player.STATE_BUFFERING -> { listeners.forEach { it.onBufferListener() } }
-                Player.STATE_ENDED -> { listeners.forEach { it.onCompleteListener() }}
-                Player.STATE_IDLE -> { listeners.forEach { it.onIdleListener() }}
-                Player.STATE_READY -> { listeners.forEach { it.onReadyListener() }}
+                Player.STATE_BUFFERING -> {
+                    listeners.forEach { it.onBufferListener() }
+                }
+                Player.STATE_ENDED -> {
+                    listeners.forEach { it.onCompleteListener() }
+                }
+                Player.STATE_IDLE -> {
+                    listeners.forEach { it.onIdleListener() }
+                }
+                Player.STATE_READY -> {
+                    listeners.forEach { it.onReadyListener() }
+                }
             }
         }
 
@@ -235,10 +217,47 @@ class DefaultCellPlayer: CellPlayer {
             super.onPlayerError(error)
             listeners.forEach { it.onErrorListener(error) }
         }
+
+        override fun onTracksChanged(
+            trackGroups: TrackGroupArray,
+            trackSelections: TrackSelectionArray
+        ) {
+            val mappedTrackInfo = trackSelector?.currentMappedTrackInfo ?: return
+            qualityLevels.clear()
+            for (rendererIndex in 0 until mappedTrackInfo.rendererCount) {
+                val rendererTrackGroups =
+                    mappedTrackInfo.getTrackGroups(rendererIndex)
+                val trackSelection = trackSelections[rendererIndex]
+                if (rendererTrackGroups.length > 0) {
+                    for (groupIndex in 0 until rendererTrackGroups.length) {
+                        val trackGroup = rendererTrackGroups[groupIndex]
+                        for (trackIndex in 0 until trackGroup.length) {
+                            val format = trackGroup.getFormat(trackIndex)
+                            if (format.sampleMimeType!!.startsWith(MimeTypes.BASE_TYPE_VIDEO)) {
+                                if (qualityLevels.isEmpty()) {
+                                    val qlAuto = QualityLevel(label = "Auto", groupIndex = groupIndex, rendererIndex = rendererIndex)
+                                    qualityLevels.add(qlAuto)
+
+                                    val qualityLevel = QualityLevel(
+                                        width = format.width,
+                                        height = format.height,
+                                        bitrate = format.bitrate,
+                                        label = format.id?: "",
+                                        trackIndex = trackIndex,
+                                        groupIndex = groupIndex,
+                                        rendererIndex = rendererIndex
+                                    )
+                                    qualityLevels.add(qualityLevel)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     companion object {
         val TAG = DefaultCellPlayer::class.java.simpleName
     }
-
 }

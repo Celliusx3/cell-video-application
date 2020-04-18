@@ -9,4 +9,6 @@ interface SettingsRepository {
     fun getSources(): Observable<List<DataSource>>
     fun getSelectedSource(): DataSource?
     fun updateSelectedSource(selectedSource: DataSource)
+
+    fun getPrivacyPolicy(): String
 }

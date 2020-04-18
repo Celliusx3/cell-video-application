@@ -41,6 +41,10 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         
         <activity android:name="com.cellstudio.cellvideo.presentation.screens.livesource.LiveSourceActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name="com.cellstudio.cellvideo.presentation.screens.webview.BrowserActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>

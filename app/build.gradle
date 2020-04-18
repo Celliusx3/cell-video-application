@@ -15,9 +15,17 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "PRIVACY_POLICY_URL", "\"https://cell-studio.github.io/CellVPN-PrivacyPolicy/\""
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "PRIVACY_POLICY_URL", "\"https://cell-studio.github.io/CellVPN-PrivacyPolicy/\""
         }
     }
     compileOptions {

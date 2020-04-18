@@ -2,6 +2,7 @@ package com.cellstudio.cellvideo.presentation.screens.livesource
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import com.cellstudio.cellvideo.R
@@ -10,22 +11,31 @@ import kotlinx.android.synthetic.main.activity_details.*
 
 class LiveSourceActivity : BaseInjectorActivity() {
 
-    private var model: String?= null
+    private lateinit var url: String
+    private lateinit var title: String
 
     companion object {
-        private const val EXTRA_LIVE_SOURCE = "EXTRA_LIVE_SOURCE"
+        private const val EXTRA_LIVE_SOURCE_URL = "EXTRA_LIVE_SOURCE_URL"
+        private const val EXTRA_LIVE_SOURCE_TITLE = "EXTRA_LIVE_SOURCE_TITLE"
 
-        fun getCallingIntent(context: Context, model: String): Intent {
+        fun getCallingIntent(context: Context, url: String, title: String): Intent {
             val intent = Intent(context, LiveSourceActivity::class.java)
-            intent.putExtra(EXTRA_LIVE_SOURCE, model)
+            intent.putExtra(EXTRA_LIVE_SOURCE_URL, url)
+            intent.putExtra(EXTRA_LIVE_SOURCE_TITLE, title)
             return intent
         }
+    }
+
+    override fun onSetContentView() {
+        super.onSetContentView()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
     }
 
     override fun onGetInputData(savedInstanceState: Bundle?) {
         super.onGetInputData(savedInstanceState)
         intent?.let {
-            model = intent.getStringExtra(EXTRA_LIVE_SOURCE)
+            url = intent.getStringExtra(EXTRA_LIVE_SOURCE_URL) ?: ""
+            title = intent.getStringExtra(EXTRA_LIVE_SOURCE_TITLE) ?: ""
         }
     }
 
@@ -39,14 +49,9 @@ class LiveSourceActivity : BaseInjectorActivity() {
 
     override fun onBindView() {
         super.onBindView()
-        model?.let {
-            //            val fragment = VideoPlayerFragment.newInstance("")
-            val fragment = LiveSourceFragment.newInstance(it)
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.flVpMain, fragment)
-            fragmentTransaction.commit()
-        }
+        val fragment = LiveSourceFragment.newInstance(url, title)
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.flVpMain, fragment)
+        fragmentTransaction.commit()
     }
-
-
 }

@@ -3,6 +3,7 @@ package com.cellstudio.cellvideo.data.environment
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
+import com.cellstudio.cellvideo.BuildConfig
 
 class BaseEnvironment(val context: Context) : Environment {
 
@@ -36,5 +37,9 @@ class BaseEnvironment(val context: Context) : Environment {
 
     override fun getOSVersion(): String {
         return Build.VERSION.RELEASE
+    }
+
+    override fun getPrivacyUrl(): String {
+        return BuildConfig.PRIVACY_POLICY_URL
     }
 }

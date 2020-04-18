@@ -1,6 +1,7 @@
 package com.cellstudio.cellvideo.presentation.screens.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
@@ -17,8 +18,10 @@ import com.cellstudio.cellvideo.interactor.viewmodel.main.PageViewModelImpl
 import com.cellstudio.cellvideo.presentation.adapters.LiveSourceAdapter
 import com.cellstudio.cellvideo.presentation.base.BaseInjectorFragment
 import com.cellstudio.cellvideo.presentation.screens.SingleSelectionBottomSheetFragment
+import com.cellstudio.cellvideo.presentation.screens.alertdialogs.DialogUtils
 import com.cellstudio.cellvideo.presentation.screens.details.DetailsActivity
 import com.cellstudio.cellvideo.presentation.screens.livesource.LiveSourceActivity
+import com.cellstudio.cellvideo.presentation.screens.loading.LoadingDialogFragment
 import com.cellstudio.cellvideo.presentation.screens.settings.SettingsActivity
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_page.*
@@ -30,6 +33,8 @@ class PageFragment: BaseInjectorFragment() {
     private var filter: FilterListPresentationModel?= null
     private lateinit var map: Map<String, String>
     private lateinit var title: String
+
+    private val loadingDialogFragment = LoadingDialogFragment.newInstance()
 
     private val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -54,11 +59,19 @@ class PageFragment: BaseInjectorFragment() {
     }
 
     private fun setupAdapter() {
+       val test =  DialogUtils.showLoadingDialog(context!!)
+        test.show()
+//        val layoutParams = WindowManager.LayoutParams()
+//        layoutParams.copyFrom(test.getWindow()?.getAttributes())
+//        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT
+//        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+//        test.getWindow()?.setAttributes(layoutParams)
         adapter = LiveSourceAdapter(mutableListOf(), context!!)
         adapter.setListener(object: LiveSourceAdapter.Listener {
             override fun onModelClicked(model: LiveSourcePresentationModel) {
+                Log.d("Test",model.url)
                 if (model.type == LiveSourcePresentationModel.ContentType.LIVESOURCE) {
-                    val intent = LiveSourceActivity.getCallingIntent(context!!, model.url)
+                    val intent = LiveSourceActivity.getCallingIntent(context!!, model.url, model.name)
                     startActivity(intent)
                 } else {
                     pageViewModel.getViewEvent().onGetDetails(model.id)
@@ -200,14 +213,6 @@ class PageFragment: BaseInjectorFragment() {
                     }
                 }
             }
-
-//            if (nsv != null && adapter.itemCount > 0 && !adapter.getLoading()) {
-//                val lastItem = nsv.getChildAt(nsv.childCount - 1)
-//                val isLastItemVisible = lastItem.bottom - (nsv.height + nsv.scrollY) == 0
-//                if (isLastItemVisible) {
-//                    pageViewModel.getViewEvent().onLoadMore()
-//                }
-//            }
         }
     }
 }

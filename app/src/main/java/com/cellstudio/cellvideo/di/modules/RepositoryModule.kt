@@ -4,6 +4,7 @@ import com.cellstudio.cellvideo.constants.SharedPrefConstants
 import com.cellstudio.cellvideo.data.base.HttpClient
 import com.cellstudio.cellvideo.data.db.AppDatabase
 import com.cellstudio.cellvideo.data.entities.general.DataSource
+import com.cellstudio.cellvideo.data.environment.Environment
 import com.cellstudio.cellvideo.data.repositories.customRepository.CustomRepositoryImpl
 import com.cellstudio.cellvideo.data.repositories.eyunzhurepository.EYunZhuRepository
 import com.cellstudio.cellvideo.data.repositories.eyunzhurepository.EYunZhuRepositoryImpl
@@ -41,8 +42,8 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideSettingsRepository(storage: StorageService, database: AppDatabase): SettingsRepository {
-        return SettingsRepositoryImpl(storage, database)
+    fun provideSettingsRepository(storage: StorageService, database: AppDatabase, environment: Environment): SettingsRepository {
+        return SettingsRepositoryImpl(storage, database, environment)
     }
 
 }

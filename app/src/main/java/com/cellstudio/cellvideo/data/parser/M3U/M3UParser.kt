@@ -1,6 +1,5 @@
 package com.cellstudio.cellvideo.data.parser.m3u
 
-import android.util.Log
 import com.cellstudio.cellvideo.data.entities.m3u.general.M3UItem
 import java.io.InputStream
 import java.util.*
@@ -14,8 +13,18 @@ object M3UParser {
     fun parse(playlist: InputStream): MutableList<M3UItem> {
         val cl = mutableListOf<M3UItem>()
         val s = Scanner(playlist).useDelimiter("#")
-        Log.d("HOLINO", s.next().trim { it <= ' ' })
-        require(!s.next().trim { it <= ' ' }.contains("EXTM3U"))
+        val firstLine = s.next().trim { it <= ' ' }
+        if (!firstLine.contains("EXTM3U")) {
+            val matcher = channel_pattern.matcher(firstLine)
+            if (matcher.find()) {
+                val item = M3UItem(
+                    matcher.group(2),
+                    matcher.group(3),
+                    parseMetadata(matcher.group(1) ?: "", metadata_pattern)
+                )
+                cl.add(item)
+            }
+        }
         while (s.hasNext()) {
             val line = s.next()
             val matcher = channel_pattern.matcher(line)

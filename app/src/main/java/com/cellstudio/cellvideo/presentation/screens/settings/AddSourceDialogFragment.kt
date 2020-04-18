@@ -16,18 +16,8 @@ import com.cellstudio.cellvideo.presentation.screens.loading.LoadingDialogFragme
 import javax.inject.Inject
 
 class AddSourceDialogFragment: BaseInjectorDialogFragment() {
-//    @Inject
-//    lateinit var dataSourceRepository: DataSourceRepository
-//    @Inject
-//    lateinit var scheduler: SchedulerProvider
-
     @Inject
     lateinit var settingsInteractor: SettingsInteractor
-
-//    val btnEnabledLiveData:MediatorLiveData<Boolean> = MediatorLiveData()
-//    val sourceUrlLiveData: MutableLiveData<String> = MutableLiveData()
-//    val labelNameLiveData: MutableLiveData<String> = MutableLiveData()
-//    private val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     var listener: Listener ?= null
 
@@ -50,8 +40,6 @@ class AddSourceDialogFragment: BaseInjectorDialogFragment() {
     override fun onBindData(view: View) {
         super.onBindData(view)
         dialog?.window?.setBackgroundDrawableResource(R.drawable.rounded_dialog)
-
-//        setupBtnEnabledLiveData()
     }
 
     override fun onSetupViewModel() {
@@ -85,38 +73,8 @@ class AddSourceDialogFragment: BaseInjectorDialogFragment() {
         })
     }
 
-//    private fun setupBtnEnabledLiveData() {
-//        loadingLiveData.observe(this, Observer {
-//            if (it) {
-//                loadingDialogFragment.show(childFragmentManager, null)
-//            } else {
-//                loadingDialogFragment.dismiss()
-//            }
-//        })
-//
-//        btnSourceConfirm.setOnClickListener {
-//            sourceUrlLiveData.value?.let {
-//                setupErrorView ("")
-//                loadingLiveData.value = true
-//                disposable.add(dataSourceRepository.validateDataSource(it)
-//                    .subscribeOn(scheduler.io())
-//                    .observeOn(scheduler.ui())
-//                    .doFinally { loadingLiveData.value = false }
-//                    .subscribe({validSource ->
-//                        if (validSource) {
-//                            listener?.addSource(DataSourcePresentationModel(labelNameLiveData.value?:"", labelNameLiveData.value?:"", sourceUrlLiveData.value?:"", true))
-//                            this.dismiss()
-//                        } else {
-//                            setupErrorView (getString(R.string.not_a_valid_link))
-//                        }
-//                    }, { setupErrorView (getString(R.string.not_a_valid_link)) }))
-//            }
-//        }
-//    }
-
     interface Listener {
         fun addSource(dataSource: DataSourcePresentationModel)
-
     }
 
     companion object {

@@ -9,4 +9,5 @@ interface Environment {
     fun getDeviceName() : String
     fun getOSName() : String
     fun getOSVersion() : String
+    fun getPrivacyUrl(): String
 }

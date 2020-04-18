@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rlPlayerControlsContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,14 +24,22 @@
             android:layout_height="@dimen/player_controls_bar_height"
             android:clickable="true"
             android:onClick="onClick"
+            android:layout_marginEnd="@dimen/margin_m"
             android:scaleType="fitCenter"
             android:tint="@color/white"
             android:src="@drawable/ic_back" />
 
-        <View
+        <TextView
+            android:id="@+id/tvPlayerControlsTitle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/margin_m"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:lines="1"
+            tools:text="Lorem ipsum"
+            android:textColor="@color/white"/>
 
         <ImageView
             android:id="@+id/ivPlayerControlsMore"
@@ -42,6 +51,7 @@
             android:scaleType="fitCenter"
             android:tint="@color/white"
             android:gravity="end"
+            android:visibility="gone"
             android:src="@drawable/ic_more_vert_white_24dp" />
 
     </LinearLayout>
@@ -100,17 +110,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-
-        <ImageView
-            android:id="@+id/ivPlayerControlsFullScreen"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/player_controls_bar_height"
-            android:layout_marginEnd="@dimen/margin_m"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="onClick"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_video_player_fullscreen_white_24dp" />
 
         <ImageView
             android:id="@+id/ivPlayerControlsVolume"

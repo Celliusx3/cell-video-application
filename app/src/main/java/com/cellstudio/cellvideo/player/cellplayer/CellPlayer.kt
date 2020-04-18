@@ -2,6 +2,7 @@ package com.cellstudio.cellvideo.player.cellplayer
 
 import android.content.Context
 import com.cellstudio.cellvideo.player.cellplayer.models.CellPlayerPlaySpeed
+import com.cellstudio.cellvideo.player.cellplayer.models.QualityLevel
 import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.ui.PlayerView
 
@@ -21,6 +22,7 @@ interface CellPlayer {
     fun addPlayerListener(listener: CellPlayerListener)
 
     fun getCellPlayerLifecycle(): CellPlayerLifecycle
+    fun getCellPlayerData(): CellPlayerData
 
     interface CellPlayerListener {
         fun onBufferListener()
@@ -31,6 +33,7 @@ interface CellPlayer {
         fun onCompleteListener()
         fun onIdleListener()
         fun onReadyListener()
+        fun onLoadingListener(isLoading: Boolean)
     }
 
     interface CellPlayerLifecycle {
@@ -41,7 +44,6 @@ interface CellPlayer {
     }
 
     interface CellPlayerData {
-        fun getPosition(): Long
-        fun getPlaybackSpeed(): CellPlayerPlaySpeed
+        fun getQualityLevels(): List<QualityLevel>
     }
 }

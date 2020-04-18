@@ -13,11 +13,17 @@ class PageInteractorImpl(private val repository: DataSourceRepository): PageInte
         count: Int,
         map: Map<String, Any>
     ): Observable<List<LiveSourceModel>> {
-        return repository.getLiveSource(map)
-            .map {
-                models = it
-                return@map it.subList((page * count).coerceAtMost(models.size - 1), (page * count + count - 1).coerceAtMost(models.size - 1))
-            }
+        if (models.isNullOrEmpty()) {
+            return repository.getLiveSource(map)
+                .map {
+                    models = it
+                    return@map it.subList((page * count).coerceAtMost(models.size - 1), (page * count + count).coerceAtMost(it.size - 1))
+                }
+
+        } else {
+            return Observable.just(models.subList((page * count).coerceAtMost(models.size - 1), (page * count + count).coerceAtMost(models.size - 1)))
+
+        }
     }
 
     override fun getDetails(id: String): Observable<VideoModel> {

@@ -22,7 +22,7 @@ abstract class BaseActivity : AppCompatActivity() {
         onBindData(getRootView(), savedInstanceState)
     }
 
-    protected fun onSetContentView() {
+    protected open fun onSetContentView() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         if (getLayoutResource() != 0) {
             setContentView(getLayoutResource())

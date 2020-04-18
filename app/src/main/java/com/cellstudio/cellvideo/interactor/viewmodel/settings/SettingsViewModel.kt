@@ -12,12 +12,14 @@ interface SettingsViewModel : ViewModel {
     interface ViewEvent : ViewModel.ViewEvent {
         fun startScreen()
         fun openSourceSelectionDialog()
+        fun openPrivacyPolicy()
         fun updateSource(dataSource: DataSourcePresentationModel)
     }
 
     interface ViewData : ViewModel.ViewData {
         fun getDataSource(): LiveData<String>
         fun getOpenSourceSelectionDialog(): LiveData<DataSourcePresentationModel>
+        fun getOpenWebView(): LiveData<String>
     }
 
     interface Output : ViewModel.Output {

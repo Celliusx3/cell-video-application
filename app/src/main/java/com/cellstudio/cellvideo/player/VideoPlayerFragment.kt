@@ -30,7 +30,7 @@ class VideoPlayerFragment : BaseFragment() {
     private lateinit var videoPlayer: CellPlayer
 
     private var isFullScreen = false
-    private val pressFullScreenButtonSubject: PublishSubject<Boolean> = PublishSubject.create()
+    val pressFullScreenButtonSubject: PublishSubject<Boolean> = PublishSubject.create()
     private val pressPlayButtonSubject: PublishSubject<Unit> = PublishSubject.create()
     private val pressPauseButtonSubject: PublishSubject<Unit> = PublishSubject.create()
 
@@ -212,7 +212,7 @@ class VideoPlayerFragment : BaseFragment() {
      * should change to match_parent, match_parent
      */
     @SuppressLint("SourceLockedOrientationActivity")
-    fun enableFullScreen() {
+    private fun enableFullScreen() {
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
         if (activity is AppCompatActivity) {
             UIVisibilityUtil.enableWindowFullScreen(activity = activity as AppCompatActivity?)
@@ -226,7 +226,7 @@ class VideoPlayerFragment : BaseFragment() {
      * should change to the default ones, i.e. the player will be embedded
      */
     @SuppressLint("SourceLockedOrientationActivity")
-    fun disableFullScreen() {
+    private fun disableFullScreen() {
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
         if (activity is AppCompatActivity) {
             UIVisibilityUtil.disableWindowFullScreen(activity = activity as AppCompatActivity?)

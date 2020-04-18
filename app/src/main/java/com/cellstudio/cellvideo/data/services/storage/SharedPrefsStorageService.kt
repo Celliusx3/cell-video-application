@@ -24,7 +24,13 @@ class SharedPrefsStorageService(private val prefs: SharedPreferences,
 
     override fun setSelectedDataSource(key: String, value: DataSource) {
         val json = gson.toJson(value)
-        setString(key, json)
+        commitString(key, json)
+    }
+
+    private fun commitString(key: String, value: String) {
+        val editor = prefs.edit()
+        editor.putString(key, value)
+        editor.apply()
     }
 
     override fun getSelectedDataSource(key: String): DataSource? {

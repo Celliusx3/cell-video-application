@@ -10,4 +10,6 @@ interface SettingsInteractor {
     fun getSelectedDataSource(): DataSourceModel?
     fun updateSelectedDataSource(dataSourceModel: DataSourceModel)
     fun validateDateSource(url: String): Observable<Boolean>
+
+    fun getPrivacyPolicy(): String
 }

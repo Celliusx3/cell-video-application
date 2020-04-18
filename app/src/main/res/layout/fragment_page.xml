@@ -49,7 +49,7 @@
                         android:id="@+id/ivProfile"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:background="@drawable/selector_ripple"
+                        android:background="?actionBarItemBackground"
                         android:src="@drawable/ic_user"/>
 
                 </androidx.appcompat.widget.Toolbar>
@@ -59,15 +59,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="8dp"
                     app:layout_collapseMode="pin">
-                    <Button
+
+                    <TextView
                         android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:stateListAnimator="@null"
+                        android:padding= "8dp"
                         android:onClick="@{() -> viewModel.viewEvent.onFilterButtonClicked()}"
+                        android:background="@drawable/selector_ripple"
                         android:text="@{viewModel.viewData.subtitle}"/>
+
                 </FrameLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -84,11 +87,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id= "@+id/rvPageMain"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    android:nestedScrollingEnabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 

@@ -24,15 +24,18 @@ class PageViewModelImpl @Inject constructor(scheduler: SchedulerProvider, privat
     private val selected: MutableLiveData<FilterPresentationModel> = MutableLiveData()
     private val details: MutableLiveData<VideoPresentationModel> = MutableLiveData()
 
+    private val inputDataForAPI: MutableLiveData<Map<String, String>> = MutableLiveData()
+
     override fun setInput(input: PageViewModel.Input) {
         this.input = input
+        inputDataForAPI.value = input.data
         selected.value = input.filter?.models?.find { it.id == input.data[Constants.id]}
     }
 
     override fun getViewEvent(): PageViewModel.ViewEvent {
         return object: PageViewModel.ViewEvent {
             override fun onLoadMore() {
-                subscribeLiveSourceAPI(false, mapOf(Pair(Constants.type, input.data["type"]?: ""), Pair(Constants.id, selected.value?.id?:"")))
+                subscribeLiveSourceAPI(false, inputDataForAPI.value?: mapOf())
             }
 
             override fun onGetDetails(id: String) {
@@ -80,14 +83,15 @@ class PageViewModelImpl @Inject constructor(scheduler: SchedulerProvider, privat
 
             override fun onFilterSelected(filter: FilterPresentationModel) {
                 selected.value = filter
-                subscribeLiveSourceAPI(true, mapOf(Pair(Constants.type, input.data["type"]?: ""), Pair(Constants.id, filter.id)))
+                inputDataForAPI.value = mapOf(Pair(Constants.type, input.data["type"]?: ""), Pair(Constants.id, selected.value?.id?:""))
+                subscribeLiveSourceAPI(true, inputDataForAPI.value?: mapOf())
             }
         }
     }
 
     override fun getViewData(): PageViewModel.ViewData {
         return object: PageViewModel.ViewData {
-            override fun getSubtitle(): LiveData<String> = Transformations.map (selected) { it.displayText }
+            override fun getSubtitle(): LiveData<String> = Transformations.map (selected) { it?.displayText?: "" }
             override fun getDetails(): LiveData<VideoPresentationModel>  = details
             override fun getLiveSources(): LiveData<Pair<List<LiveSourcePresentationModel>, Boolean>> = liveSources
             override fun getIsGridView(): LiveData<Boolean> = isGridView

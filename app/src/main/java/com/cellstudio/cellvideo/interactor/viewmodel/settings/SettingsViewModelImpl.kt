@@ -17,6 +17,7 @@ class SettingsViewModelImpl @Inject constructor(scheduler: SchedulerProvider,
     private val dataSourceLiveData: MutableLiveData<DataSourcePresentationModel> = MutableLiveData()
     private val openSourceSelectionDialogLiveData: MutableLiveData<DataSourcePresentationModel> = MutableLiveData()
     private val resetLiveData: MutableLiveData<Unit> = MutableLiveData()
+    private val webLiveData: MutableLiveData<String> = MutableLiveData()
 
 
     override fun getViewData(): SettingsViewModel.ViewData {
@@ -24,6 +25,7 @@ class SettingsViewModelImpl @Inject constructor(scheduler: SchedulerProvider,
             override fun getDataSource(): LiveData<String> = Transformations.map (dataSourceLiveData) { it.label }
             override fun getOpenSourceSelectionDialog(): LiveData<DataSourcePresentationModel> = openSourceSelectionDialogLiveData
             override val loading: LiveData<Boolean> = loadingLiveData
+            override fun getOpenWebView(): LiveData<String> = webLiveData
         }
     }
 
@@ -50,6 +52,10 @@ class SettingsViewModelImpl @Inject constructor(scheduler: SchedulerProvider,
 
             override fun startScreen() {
                 dataSourceLiveData.value =setupInitialStorageService()
+            }
+
+            override fun openPrivacyPolicy() {
+                webLiveData.value = settingsInteractor.getPrivacyPolicy()
             }
 
             override fun openSourceSelectionDialog() {

@@ -17,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_single_selection.*
 import kotlinx.android.synthetic.main.fragment_video_player_more.rvMoreList
 
-class SingleSelectionBottomSheetFragment<T: SelectionModel> : BaseBottomSheetDialogFragment() {
+open class SingleSelectionBottomSheetFragment<T: SelectionModel> : BaseBottomSheetDialogFragment() {
     private var binding: FragmentSingleSelectionBinding? = null
 
     private lateinit var adapter: SingleSelectionAdapter<T>
@@ -55,10 +55,20 @@ class SingleSelectionBottomSheetFragment<T: SelectionModel> : BaseBottomSheetDia
                     val inputText = p0?.toString()
                     if (!(inputText.isNullOrEmpty())) {
                         selectionsList?.let {
-                            adapter.setData(it.filter { test -> test.getText().contains(inputText, true) })
+                            val filteredData = it.filter { test -> test.getText().contains(inputText, true)}
+                            if (filteredData.isNullOrEmpty()) {
+                                tvEmpty.visibility = View.VISIBLE
+                                rvMoreList.visibility = View.GONE
+                            } else {
+                                rvMoreList.visibility = View.VISIBLE
+                                tvEmpty.visibility = View.GONE
+                                adapter.setData(filteredData)
+                            }
                         }
                     } else {
                         selectionsList?.let {
+                            rvMoreList.visibility = View.VISIBLE
+                            tvEmpty.visibility = View.GONE
                             adapter.setData(it)
                         }
                     }

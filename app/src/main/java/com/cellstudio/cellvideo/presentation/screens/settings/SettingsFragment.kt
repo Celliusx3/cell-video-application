@@ -13,6 +13,7 @@ import com.cellstudio.cellvideo.interactor.viewmodel.settings.SettingsViewModel
 import com.cellstudio.cellvideo.interactor.viewmodel.settings.SettingsViewModelImpl
 import com.cellstudio.cellvideo.presentation.base.BaseInjectorFragment
 import com.cellstudio.cellvideo.presentation.screens.splash.SplashActivity
+import com.cellstudio.cellvideo.presentation.screens.webview.BrowserActivity
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : BaseInjectorFragment() {
@@ -58,6 +59,11 @@ class SettingsFragment : BaseInjectorFragment() {
         settingsViewModel.getOutput().getResetData().observe(this, Observer {
             navigateToSplashScreen()
         })
+
+        settingsViewModel.getViewData().getOpenWebView().observe( this, Observer { it?.let {
+            val intent = BrowserActivity.getCallingIntent(context!!, it)
+            context!!.startActivity(intent)
+        }})
     }
 
     private fun navigateToSplashScreen() {

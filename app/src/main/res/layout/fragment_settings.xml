@@ -85,6 +85,25 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id = "@+id/llSettingsPrivacyPolicy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:onClick="@{() -> viewmodel.viewEvent.openPrivacyPolicy()}"
+                    android:background="@drawable/selector_ripple"
+                    android:padding = "16dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:text = "@string/privacy_policy"/>
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

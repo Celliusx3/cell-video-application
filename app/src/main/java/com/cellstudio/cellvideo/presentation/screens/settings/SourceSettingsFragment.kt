@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +17,7 @@ import com.cellstudio.cellvideo.interactor.viewmodel.settings.SourceSettingsView
 import com.cellstudio.cellvideo.interactor.viewmodel.settings.SourceSettingsViewModelImpl
 import com.cellstudio.cellvideo.presentation.adapters.SourceAdapter
 import com.cellstudio.cellvideo.presentation.base.BaseInjectorBottomSheetDialogFragment
+import com.cellstudio.cellvideo.presentation.screens.alertdialogs.DialogUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_source_settings.*
@@ -120,14 +120,7 @@ class SourceSettingsFragment : BaseInjectorBottomSheetDialogFragment() {
     }
 
     private fun showDeleteDialog(context: Context, model: DataSourcePresentationModel) {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.AppThemeAlertDialog)
-        builder.setTitle(getString(R.string.delete_source))
-        builder.setMessage(getString(R.string.delete_source_description))
-        builder.setPositiveButton(getString(R.string.confirm)) { _, _ ->
-            viewModel.getViewEvent().removeSource(model.id)
-        }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+        DialogUtils.showPositiveButtonDialog(context, getString(R.string.delete_source), getString(R.string.delete_source_description), getString(R.string.confirm), DialogInterface.OnClickListener { _, _ -> viewModel.getViewEvent().removeSource(model.id) })
     }
 
     interface Listener {
